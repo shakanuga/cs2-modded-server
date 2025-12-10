@@ -630,6 +630,9 @@
 				"workshop/3555531615/ctf_2fort"				""
 				"workshop/3555532817/ctf_doublecross"		""
 				"workshop/3555534037/ctf_turbine"			""
+				"workshop/3611844411/ctf_orchard"			""
+				"workshop/3611854449/ctf_sawpit"			""
+				"workshop/3611843310/ctf_landslide"			""
 			}
 		}
 		"mg_hns2"
@@ -657,4 +660,5 @@
 		}
 	}
 }
+
 

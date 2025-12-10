@@ -504,20 +504,19 @@
 			"displayname"			"Course"
 			"maps"
 			{
-				"workshop/3076483842/cr_devisland_p1_v1"		""
-				"workshop/3070439729/mg_switch_course_v2"		""
-				"workshop/3070896876/cr_minecraft_jb_v2"		""
-				"workshop/3070463151/mg_metro_course_v1"		""
-				"workshop/3070455802/mg_alley_course_v2"		""
-				"workshop/3070445185/mg_glave_course_v2"		""
-				"workshop/3070459211/mg_office_course_v3"		""
-				"workshop/3070464208/mg_metal_course_v2"		""
-				"workshop/3070463620/mg_acrophobia_run_v2"		""
-				"workshop/3071040020/mg_metro_course_s2"		""
-				"workshop/3070434475/mg_circle_course_v3"		""
-				"workshop/3070447697/mg_simpsons_course_v2"		""
-				"workshop/3070452642/mg_sonic_course_v2"		""
-				"workshop/3070451616/mg_sky_realm_v3"		""
+				"workshop/3198011377/frypemap_cv7"		""
+				"workshop/3297768125/mg_bobiii_reborn"		""
+				"workshop/3450234327/mg_mimas"		""
+				"workshop/3075574739/mg_Space_Course"		""
+				"workshop/3385681426/mg_terminal"		""
+				"workshop/3369016400/mg_induction"		""
+				"workshop/3364078334/mg_bob2_t"		""
+				"workshop/3200157057/Mg_cypher_cs2"		""
+				"workshop/3070464208/mg_metal_course_v3"		""
+				"workshop/3278023104/mg_slowdown"		""
+				"workshop/3282542601/mg_gumobstacle_t"		""
+				"workshop/3263027853/mg_nothing_hard"		""
+				"workshop/3359561168/mg_foolscourse_t"		""
 			}
 		}
 		"mg_scoutzknivez"
@@ -528,6 +527,8 @@
 			{
 				"workshop/3073929825/scoutzknivez_pure_cs2"		""
 				"workshop/3070553020/ar_dizzy"		""
+				"workshop/3070563536/de_lake"		""
+				"workshop/3070560242/ar_lunacy"		""
 			}
 		}
 		"mg_hns"
@@ -559,6 +560,7 @@
 			"maps"
 			{
 				"workshop/3142070597/awp_bhop_rocket"		""
+				"workshop/3341912122/awp_lego_2_halloween"		""
 			}
 		}
 		"mg_battle"
@@ -615,6 +617,8 @@
 				"workshop/3245245780/de_nuke_silly"				""
 				"workshop/3270516952/de_mirage45"				""
 				"workshop/3406937162/de_train_twyxe"		""
+				"workshop/3431300081/cs_office_45"		""
+				"workshop/3458457574/cs_italy_45"		""
 			}
 		}
 		"mg_ctf"
@@ -628,5 +632,29 @@
 				"workshop/3555534037/ctf_turbine"			""
 			}
 		}
+		"mg_hns2"
+		{
+			"name"			"mg_hns2"
+			"displayname"			"Hide and Seek 2"
+			"maps"
+			{
+				"workshop/3097563690/infernohideandseek"		""
+				"workshop/3235547383/seek_mirage"		""
+				"workshop/3150746597/hns_fnaf"		""
+				"workshop/3354500067/dust2_hideandseek"		""
+                "workshop/3153006472/Sandstone"           ""
+                "workshop/3155733578/Cottage_KREVETKA03"           ""
+                "workshop/3216213823/Inside Pyramid"           ""
+                "workshop/3204903088/Pool_Home"           ""
+                "workshop/3099799704/SEEK SANDY AREA BS"           ""
+                "workshop/3225173551/seek_6eJIo4ka_01"           ""
+                "workshop/3158599609/seek_enterprise"           ""
+                "workshop/3160043493/seek_violetto"           ""
+                "workshop/3196214967/Abandoned House"           ""
+                "workshop/3193733376/School"           ""
+                "workshop/3122367230/LEGO REMAKE BS"           ""
+			}
+		}
 	}
 }
+

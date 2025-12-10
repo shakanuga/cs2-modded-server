@@ -256,7 +256,7 @@
       {
         "Name": "Course",
         "Config": "course.cfg",
-        "DefaultMap": "3070455802",
+        "DefaultMap": "3198011377",
         "MapGroups": [
           "mg_course"
         ]
@@ -288,7 +288,7 @@
       {
         "Name": "One In The Chamber",
         "Config": "oitc.cfg",
-        "DefaultMap": "ar_pool_day",
+        "DefaultMap": "ar_shoots",
         "MapGroups": [
           "mg_gg"
         ]
@@ -372,6 +372,14 @@
         "DefaultMap": "3276886893",
         "MapGroups": [
           "mg_45"
+        ]
+      },
+      {
+        "Name": "Hide and Seek 2",
+        "Config": "hns2.cfg",
+        "DefaultMap": "3097563690",
+        "MapGroups": [
+          "mg_hns2"
         ]
       }
     ]

@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v8.0": {
-      "QuakeSounds/26.01.2": {
+      "QuakeSounds/26.01.3": {
         "dependencies": {
           "CounterStrikeSharp.API": "1.0.355"
         },
@@ -287,7 +287,7 @@
     }
   },
   "libraries": {
-    "QuakeSounds/26.01.2": {
+    "QuakeSounds/26.01.3": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

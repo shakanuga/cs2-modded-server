@@ -88,9 +88,9 @@ Getting up and running:
 
 Mod | Version | Why
 --- | --- | ---
-[Metamod:Source](https://www.metamodsource.net/downloads.php?branch=dev) | `2.0.0-1380` | Sits between the Game and the Engine, and allows plugins to intercept calls that flow between
-[CounterStrikeSharp](https://github.com/roflmuffin/CounterStrikeSharp) | `1.0.355` | Attempts to implement a .NET Core scripting layer on top of a Metamod Source Plugin, allowing developers to create plugins that interact with the game server in a modern language (C#)
-[MultiAddonManager](https://github.com/Source2ZE/MultiAddonManager) | `1.4.8` | Allows you to use multiple workshop addons at once and have clients download them [How?](#i-want-to-permanently-enable-multi-addon-manager)
+[Metamod:Source](https://www.metamodsource.net/downloads.php?branch=dev) | `2.0.0-1383` | Sits between the Game and the Engine, and allows plugins to intercept calls that flow between
+[CounterStrikeSharp](https://github.com/roflmuffin/CounterStrikeSharp) | `1.0.356` | Attempts to implement a .NET Core scripting layer on top of a Metamod Source Plugin, allowing developers to create plugins that interact with the game server in a modern language (C#)
+[MultiAddonManager](https://github.com/Source2ZE/MultiAddonManager) | `1.4.9` | Allows you to use multiple workshop addons at once and have clients download them [How?](#i-want-to-permanently-enable-multi-addon-manager)
 [ServerListPlayersFix](https://github.com/Source2ZE/ServerListPlayersFix) | `1.0.5` | Fixes players not showing up in the server browser
 [MovementUnlocker](https://github.com/Source2ZE/MovementUnlocker) | `1.9` | Removes max speed limitation from players on the ground, feels like CS:S [How?](#i-run-a-surfkzbhop-server-and-want-movementunlocker-and-cs2fixes-rampbugfix-permanently-on)
 [CS2Fixes-RampbugFix](https://github.com/Interesting-exe/CS2Fixes-RampbugFix) | `11-5` | Minimizes rampbugs (needs to be enabled via `!settings` [How?](#i-run-a-surfkzbhop-server-and-want-movementunlocker-and-cs2fixes-rampbugfix-permanently-on))
@@ -121,13 +121,13 @@ Mod | Version | Why
 [AnnouncementBroadcaster](https://github.com/lengran/CS2AnnouncementBroadcaster) | `0.5` | Conditional messages, OnCommand, OnPlayerConnect, OnRoundStart, and TimerMsgs.
 [CS2-GameModifiers](https://github.com/vinicius-trev/CS2-GameModifiers-Plugin) | `1.0.4` | CS2, but every round is a SURPRISE. Inspiration from [NadeKings video](https://www.youtube.com/watch?v=OQQBUFB56Iw). Fork from [Lewisscrivens](https://github.com/Lewisscrivens/CS2-GameModifiers-Plugin).
 [CS2FunMatchPlugin](https://github.com/TitaniumLithium/CS2FunMatchPlugin) | `1.1.1` | Random fun mode every round
-[RollTheDice](https://github.com/Kandru/cs2-roll-the-dice) | `26.01.2` | Roll the dice to get either a positive or negative effect for the current round.
+[RollTheDice](https://github.com/Kandru/cs2-roll-the-dice) | `26.01.3` | Roll the dice to get either a positive or negative effect for the current round.
 [CS2-FixRandomSpawn](https://github.com/qstage/CS2-FixRandomSpawn) | `1.1.4.1` | Fixes ConVar `mp_randomspawn` for any game mode.
 [CS2-MutualScoringPlayers](https://github.com/qstage/CS2-MutualScoringPlayers) | `1.0.3` | Keeps score of kills between players.
 [CS2WarcraftMod](https://github.com/Wngui/CS2WarcraftMod) | `3.3.5` | An open-source Warcraft mod for CS2 featuring a fully-fledged RPG system.
 [cs2-advanced-weapon-system](https://github.com/schwarper/cs2-advanced-weapon-system) | `1.11` | An advanced weapon system that gives full control over weapon attributes, dynamic adjustments to weapon behaviour, restrictions and advanced customisation.
 [cs2-OneInTheChamber](https://github.com/ShookEagle/cs2-OneInTheChamber) | `1.0.0` | One in the Chamber game mode.
-[cs2-quake-sounds](https://github.com/Kandru/cs2-quake-sounds) | `26.01.2` | Quake Sounds on multi kills.
+[cs2-quake-sounds](https://github.com/Kandru/cs2-quake-sounds) | `26.01.3` | Quake Sounds on multi kills.
 [CS2-WeaponSpeed](https://github.com/akanora/CS2-WeaponSpeed) | `1.3` | Gives players a speed boost when they fire specified weapons.
 [SpectatorList-CS2](https://github.com/wiruwiru/SpectatorList-CS2) | `16` | Shows real-time spectators in on-screen display.
 [SLAYER_Football](https://github.com/zakriamansoor47/SLAYER_Football) | `1.1` | Football in CS2.

@@ -43,8 +43,8 @@
   },
   "CCSPlayer_WeaponServices_DropWeapon": {
     "offsets": {
-      "windows": 23,
-      "linux": 24
+      "windows": 24,
+      "linux": 25
     }
   }
 }

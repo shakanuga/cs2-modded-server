@@ -1,12 +1,12 @@
 ﻿{
   //Menu + Core //Menu + Core
-  "menu.selection.left": "<font color='red' class='fontSize-s'>▶ </font>", // Left selection arrow
-  "menu.selection.right": "<font color='red' class='fontSize-s'> ◀</font>", // Right selection arrow
+  "menu.selection.left": "<font color='red' class='fontSize-s'>? </font>", // Left selection arrow
+  "menu.selection.right": "<font color='red' class='fontSize-s'> ?</font>", // Right selection arrow
   "menu.option.select": "Mellemrum", // Space
   "menu.option.select.dead": "E", // E (when dead)
   "menu.option.exit": "Tab", // Tab
-  "menu.option.up": "W↑", // W↑
-  "menu.option.down": "S↓", // S↓
+  "menu.option.up": "W?", // W?
+  "menu.option.down": "S?", // S?
   "menu.exit": "Afslut", // Exit
   "menu.select": "Vælg", // Select
   "menu.navigate": "Naviger", // Navigate
@@ -19,7 +19,7 @@
   "menu.skills.available": "Opgrader færdigheder ({0} tilgængelige)", // Upgrade skills ({0} available)
   "menu.skills.ultimate.level": "niveau {0}", // level {0}
   "menu.shop": "Genstandsbiks", // Item Shop
-  "menu.shop.carry_limit": "Du kan ikke bære flere genstande.", // Du kan ikke bære flere genstande.
+  "menu.shop.carry_limit": "Du kan ikke bære mere end {0} genstande.", // Limit placeholder
   "menu.shop.already_owned": "Du ejer allerede denne genstand.", // Du ejer allerede denne genstand.
   "menu.shop.not_enough_money": "Ikke nok penge!", // Ikke nok penge!
   "menu.shop.bought": "Købt {Green}[{Gold}{0}{Green}]",
@@ -32,7 +32,11 @@
   "xp.kill": "{Gold}+{0} XP {Default}for at dræbe {Green}{1} {Default}{2}{3}{4}", // +{0} XP for killing {1} {2}{3}{4}
   "xp.add": "Tilføjer {0} xp til spiller {1}", // Adding {0} xp to player {1}
   "xp.roundwin": "{Gold}+{0} XP {Default}for at vinde runden", // +{0} XP for winning the round
+  "xp.assist": "{Gold}+{0} XP {Default}for assisting on {Green}{1}",
+  "xp.bomb.plant": "{Gold}+{0} XP {Default}for planting the bomb",
+  "xp.bomb.defuse": "{Gold}+{0} XP {Default}for defusing the bomb",
   "xp.roundinfo": "{Gold}{0} {Grey}| {White}Niveau {White}{1} {Grey}| {Lime}{2}{Default}/{Green}{3}{Default} XP",
+  "ability.benefits.header": "Aktive fordele ({0})",
   "ability.ready": "{0} er klar!", // {0} is ready!
   "ultimate.countdown": "Ultimativ færdighed klar om {0}s", // Ultimate ability ready in {0}s
   "no.ultimate": "Ingen niveauer i ultimativ færdighed", // No levels in ultimate ability
@@ -54,6 +58,21 @@
   "command.shopmenu": "shopmenu", // shopmenu
   "command.help": "kommandoer", // commands
   "command.help.description": "{Green}Skriv {Gold}!class{Green} for at skifte klasse, {Gold}!skills{Green} for at opgradere færdigheder", // Type !class to change class, !skills to upgrade skills
+  "command.info": "info,stats,wcinfo",
+  "command.info.header": "{0}s Warcraft-profil",
+  "command.info.race": "Race",
+  "command.info.level.title": "Level",
+  "command.info.level": "{0}/{1} ({2}/{3} XP, {4} XP til næste)",
+  "command.info.abilities": "Evner",
+  "command.info.buffs": "Buffs",
+  "command.info.buff.speed": "Hastighedsmodifier: {0:0.#}%",
+  "command.info.buff.gravity": "Tyngdekraftsmodifier: {0:0.#}%",
+  "command.info.buff.damage": "Skadereduktion: {0:0.#}%",
+  "command.info.buff.immunity": "Trylleimmunitet: {0}",
+  "command.info.value.yes": "Ja",
+  "command.info.value.no": "Nej",
+  "command.info.target_not_found": "Kunne ikke finde den spiller.",
+  "command.info.unavailable": "Warcraft-data er ikke tilgængelig for den spiller.",
 
   //Adverts //Adverts
   "advert.0": "{Green}Vil du prøve en ny klasse? Skriv {Gold}!class{Green} for at skifte", // Want to try a new class? Type !class to change
@@ -113,7 +132,7 @@
   "paladin.ability.2": "Tugt", // Chastise
   "paladin.ability.2.description": "15/30/45/60/75% chance for at fjerne 5/10/15/20/25 rustning fra fjender.", // 15/30/45/60/75% chance to remove 5/10/15/20/25 armor from enemies.
   "paladin.ability.3": "Guddommelig genopstandelse", // Divine Resurrection
-  "paladin.ability.3.description": "Genopliver en tilfældig faldet allieret.", // Revives a random fallen ally.
+  "paladin.ability.3.description": "80% chance for at genoplive en faldet allieret. Nedkøling: 60s.", // Revives a random fallen ally.
 
   "ranger.ability.0": "Letfodet", // Fleetfooted
   "ranger.ability.0.description": "Udfører en dash i luften med 10-2s cooldown (afhænger af niveau).", // Performs an air dash with 10-2s cooldown (depends on level).
@@ -186,6 +205,7 @@
   "sacred_warrior.ability.2.description": "Får 1/2/3/4% bevægelseshastighed for hver 7% af dit liv, du mangler.",
   "sacred_warrior.ability.3": "Livsbrud",
   "sacred_warrior.ability.3.description": "Skader dig selv (20% af maks HP) for at gøre massiv skade (40% af offerets maks HP). Nedkøling: 40 sek.",
+  "sacred_warrior.lifebreak.nohp": "Du har brug for mere HP for at bruge Livsbrud!",
 
   "silent_assassin.ability.0": "Formindskelse",
   "silent_assassin.ability.0.description": "Reducerer modellens størrelse med 15/20/25/30/35%.",
@@ -203,7 +223,7 @@
   "death_weaver.ability.2": "Nekromant Mester",
   "death_weaver.ability.2.description": "65/70/75/80/85% chance for at spawne med et stormgevær.",
   "death_weaver.ability.3": "Genopliv Skelet",
-  "death_weaver.ability.3.description": "Genopliver en tilfældig allieret.",
+  "death_weaver.ability.3.description": "80% chance for at genoplive en faldet allieret. Nedkøling: 60s.",
 
   //Stock class extras //Stock class extras
   "mage.frozen": "{Blue}[FROSNET]{Default}", // [FROZEN]
@@ -211,6 +231,7 @@
   "paladin.revive": "{Green}Du er blevet genoplivet!", // You have been revived!
   "paladin.revive.other": "{Green}{0}{Default} er blevet genoplivet af {Gold}{1}", // {0} has been revived by {1}
   "paladin.revive.none": "{Red}Ingen døde allierede at genoplive!", // No dead allies to revive!
+  "paladin.revive.fail": "{Red}Guddommelig genopstandelse slog fejl!", // Resurrection failed
   "death_weaver.cripple": "{Green}Lammet {Default}{0}",
   "death_weaver.cripple.victim": "{Red}Lammet af {Default}{0}",
   "death_weaver.spawn.rifle": "{Green}Spawnet med et stormgevær!",
@@ -228,6 +249,9 @@
   "shadowblade.evaded": "{Green}Undveg {LightYellow}{0}{Green} skade!", // Evaded {0} damage!
   "shadowblade.evaded.attacker": "{LightYellow}{0} {Green} undveg dit angreb!", // {0} evaded your attack!
   "shadowblade.shadowstep": "{DarkBlue}Skyggeskridt!", // Shadowstep!
+  "shadowblade.shadowstep.chance": "{DarkBlue}Skyggeskridt! {Grey}({0}% chance)",
+  "shadowblade.shadowstep.blocked": "{LightRed}Shadowstep failed - no safe space.",
+  "shadowblade.cloak.active": "{Green}Cloak of Shadows active ({0}% invisibility).",
   "shadowblade.venomstrike": "{Green}Forgiftede {LightYellow}{0} {Green}for {DarkRed}{1} {Green}skade!", // Poisoned {0} for {1} damage!
   "shadowblade.venomstrike.victim": "{Green}Forgiftet for {DarkRed}{0} {Green}skade!", // Poisoned for {0} damage!
   "dwarf_engineer.buildtool": "Byggeredskab", // Build Tool
@@ -241,6 +265,12 @@
   "item.amulet_of_the_cat.activated": "Stille fodtrin aktiveret.",
   "item.amulet_of_the_cat.name": "Kattens Amulet",
   "item.amulet_of_the_cat.description": "Stille fodtrin",
+  "item.weapon_insurance.name": "Våbenforsikring",
+  "item.weapon_insurance.description": "Gendan dine nuværende våben næste runde hvis du dør (forbruges ved brug).",
+  "item.weapon_insurance.granted": "Våbenforsikringen gendanner dit loadout efter din næste død.",
+  "item.weapon_insurance.applied": "Våbenforsikringen gendannede dit loadout.",
+  "item.blademail.name": "Blademail",
+  "item.blademail.description": "{0}% chance for at returnere {1}% af indkommende våbenskade.",
   "item.amulet_of_vitality.name": "Vitalitetsamulet",
   "item.amulet_of_vitality.description": "Øger maks HP med {0}",
   "item.boots_of_speed.name": "Hastighedsstøvler",

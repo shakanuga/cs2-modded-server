@@ -933,6 +933,24 @@
             or <see cref="F:CounterStrikeSharp.API.Core.HitGroup_t.HITGROUP_INVALID"/> if the hit group cannot be determined.
             </returns>
         </member>
+        <member name="M:CounterStrikeSharp.API.Core.ScriptContext.PushPrimitive``1(``0)">
+            <summary>
+            Pushes a primitive/unmanaged value directly into the context's function
+            data buffer without boxing or Marshal.StructureToPtr overhead.
+            </summary>
+        </member>
+        <member name="M:CounterStrikeSharp.API.Core.ScriptContext.GetResultPrimitive``1">
+            <summary>
+            Reads a primitive/unmanaged result directly from the context's result
+            buffer without Marshal.PtrToStructure or boxing overhead.
+            </summary>
+        </member>
+        <member name="M:CounterStrikeSharp.API.Core.ScriptContext.GetResultNativeObject``1">
+            <summary>
+            Reads a pointer result from the context and creates a NativeObject-derived
+            instance using FastGenericNew. Avoids Activator.CreateInstance overhead.
+            </summary>
+        </member>
         <member name="M:CounterStrikeSharp.API.Core.Translations.LocalizerExtensions.ForPlayer(Microsoft.Extensions.Localization.IStringLocalizer,CounterStrikeSharp.API.Core.CCSPlayerController,System.String)">
             <summary>
             Returns a localized string using the locale of the specified player.

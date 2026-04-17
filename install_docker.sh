@@ -181,6 +181,7 @@ echo ./game/bin/linuxsteamrt64/cs2 \
     -dedicated \
     -console \
     -usercon \
+    -disable_workshop_command_filtering \
     -autoupdate \
     -tickrate $TICKRATE \
 	$IP_ARGS \
@@ -200,6 +201,7 @@ sudo -u $user ./game/bin/linuxsteamrt64/cs2 \
     -dedicated \
     -console \
     -usercon \
+    -disable_workshop_command_filtering \
     -autoupdate \
     -tickrate "$TICKRATE" \
     "$IP_ARGS" \

@@ -90,6 +90,7 @@ echo /home/${user}/steamrt/run ./game/bin/linuxsteamrt64/cs2 --graphics-provider
     -dedicated \
     -console \
     -usercon \
+    -disable_workshop_command_filtering \
     -autoupdate \
     -tickrate $TICKRATE \
 	$IP_ARGS \
@@ -109,6 +110,7 @@ sudo -u $user /home/${user}/steamrt/run ./game/bin/linuxsteamrt64/cs2 --graphics
     -dedicated \
     -console \
     -usercon \
+    -disable_workshop_command_filtering \
     -autoupdate \
     -tickrate $TICKRATE \
 	$IP_ARGS \

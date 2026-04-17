@@ -244,15 +244,16 @@
 				"workshop/3071005299/de_assembly"		""
 				"workshop/3329387648/de_cbble"		""
 				"workshop/3437809122/de_cache"		""
-				"workshop/3079872050/de_pipeline"		""
+				"workshop/3691046714/de_splinter"		""
 				"workshop/3075706807/de_biome"		""
 				"workshop/3070346180/mp_raid"		""
 				"workshop/3070766070/de_mutiny"		""
-				"workshop/3070594412/cs_assault"		""
+				"workshop/3694043544/cs_assault"		""
 				"workshop/3072352643/de_ruins_d_prefab"		""
 				"workshop/3089953774/cs_militia"		""
 				"workshop/3079692971/de_aztec_hr"		""
 				"workshop/3108513658/de_akiba"		""
+				"workshop/3681322159/factory"		""
 				"workshop/3236615060/cs_insertion2"		""
 				"workshop/3152430710/de_mills"		""
 				"workshop/3121217565/de_thera"		""
@@ -261,6 +262,8 @@
 				"workshop/3345551391/twofort_cs2"		""
 				"workshop/3460962520/de_rats_remake"		""
 				"workshop/3464733042/de_mirage_bricks"		""
+				"workshop/3683699332/project_phoenix"		""
+				"workshop/3687298714/ultimate_free_nuke"		""
 			}
 		}
 		"mg_retake"
@@ -333,7 +336,6 @@
 				"workshop/3071005299/de_assembly"		""
 				"workshop/3329387648/de_cbble"		""
 				"workshop/3437809122/de_cache"		""
-				"workshop/3079872050/de_pipeline"		""
 				"workshop/3075706807/de_biome"		""
 				"workshop/3070346180/mp_raid"		""
 				"workshop/3070766070/de_mutiny"		""
@@ -408,6 +410,7 @@
 				"workshop/3437226954/fy_hangemhigh"		""
 				"workshop/3455068243/ar_combat_arena"		""
 				"workshop/3329405459/ar_ds_cornered_gg1"		""
+				"workshop/3706720942/awp_lego_2_destructible"		""
 			}
 		}
 		"mg_1v1"
@@ -576,7 +579,7 @@
 			"maps"
 			{
 				"workshop/3142070597/awp_bhop_rocket"		""
-				"workshop/3341912122/awp_lego_2_halloween"		""
+				"workshop/3679420050/bump_arena"		""
 			}
 		}
 		"mg_battle"

@@ -223,6 +223,7 @@
 			"maps"
 			{
 				"de_dust2"			""
+				"de_cache"			""
 				"de_mirage"			""
 				"de_inferno"		""
 				"de_ancient_night"	""
@@ -243,7 +244,6 @@
 				"workshop/3328169568/de_edin"        ""
 				"workshop/3071005299/de_assembly"		""
 				"workshop/3329387648/de_cbble"		""
-				"workshop/3437809122/de_cache"		""
 				"workshop/3691046714/de_splinter"		""
 				"workshop/3075706807/de_biome"		""
 				"workshop/3070346180/mp_raid"		""
@@ -316,6 +316,7 @@
 			"maps"
 			{
 				"de_sanctum"		""
+				"de_cache"			""
 				"de_poseidon"		""
 				"de_overpass"		""
 				"de_vertigo"		""
@@ -335,7 +336,6 @@
 				"workshop/3070612859/de_shortdust"		""
 				"workshop/3071005299/de_assembly"		""
 				"workshop/3329387648/de_cbble"		""
-				"workshop/3437809122/de_cache"		""
 				"workshop/3075706807/de_biome"		""
 				"workshop/3070346180/mp_raid"		""
 				"workshop/3070766070/de_mutiny"		""

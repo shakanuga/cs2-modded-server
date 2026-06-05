@@ -2063,6 +2063,12 @@
             Returns Task that completes once the synchronous task has been completed.
             </summary>
         </member>
+        <member name="M:CounterStrikeSharp.API.Server.NextFrameAsync``1(System.Func{``0})">
+            <summary>
+            <inheritdoc cref="M:CounterStrikeSharp.API.Server.NextFrame(System.Action)"/>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> that will be completed when the function has finished executing.</returns>
+            </summary>
+        </member>
         <member name="M:CounterStrikeSharp.API.Server.NextFrame(System.Action)">
             <summary>
             Queue a task to be executed on the next game frame.
@@ -2073,6 +2079,12 @@
             <summary>
             <inheritdoc cref="M:CounterStrikeSharp.API.Server.NextWorldUpdate(System.Action)"/>
             Returns Task that completes once the synchronous task has been completed.
+            </summary>
+        </member>
+        <member name="M:CounterStrikeSharp.API.Server.NextWorldUpdateAsync``1(System.Func{``0})">
+            <summary>
+            <inheritdoc cref="M:CounterStrikeSharp.API.Server.NextWorldUpdate(System.Action)"/>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> that will be completed when the function has finished executing.</returns>
             </summary>
         </member>
         <member name="M:CounterStrikeSharp.API.Server.NextWorldUpdate(System.Action)">

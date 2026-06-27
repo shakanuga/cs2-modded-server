@@ -721,6 +721,109 @@
             Terminate the round with the given delay and reason.
             </summary>
         </member>
+        <member name="P:CounterStrikeSharp.API.Core.CCSNavArea.Id">
+            <summary>
+            Gets the nav area identifier.
+            </summary>
+        </member>
+        <member name="P:CounterStrikeSharp.API.Core.CCSNavArea.Center">
+            <summary>
+            Gets the center position of the nav area.
+            </summary>
+        </member>
+        <member name="P:CounterStrikeSharp.API.Core.CCSNavArea.Normal">
+            <summary>
+            Gets the surface normal of the nav area.
+            </summary>
+        </member>
+        <member name="P:CounterStrikeSharp.API.Core.CCSNavArea.Min">
+            <summary>
+            Gets the minimum bounds of the nav area.
+            </summary>
+        </member>
+        <member name="P:CounterStrikeSharp.API.Core.CCSNavArea.Max">
+            <summary>
+            Gets the maximum bounds of the nav area.
+            </summary>
+        </member>
+        <member name="P:CounterStrikeSharp.API.Core.CCSNavArea.Width">
+            <summary>
+            Gets the width of the nav area on the X axis.
+            </summary>
+        </member>
+        <member name="P:CounterStrikeSharp.API.Core.CCSNavArea.Height">
+            <summary>
+            Gets the height of the nav area on the Y axis.
+            </summary>
+        </member>
+        <member name="P:CounterStrikeSharp.API.Core.CCSNavArea.Area2D">
+            <summary>
+            Gets the two-dimensional area size.
+            </summary>
+        </member>
+        <member name="M:CounterStrikeSharp.API.Core.CCSNavArea.ContainsPoint(CounterStrikeSharp.API.Modules.Utils.Vector,System.Single)">
+            <summary>
+            Returns whether the specified position is inside this nav area.
+            </summary>
+            <param name="position">World position to test.</param>
+            <param name="zTolerance">Allowed Z distance from the nav area surface.</param>
+            <returns><see langword="true"/> if the position is inside this nav area; otherwise, <see langword="false"/>.</returns>
+        </member>
+        <member name="M:CounterStrikeSharp.API.Core.CCSNavArea.ContainsBox(CounterStrikeSharp.API.Modules.Utils.Vector,CounterStrikeSharp.API.Modules.Utils.Vector,System.Single)">
+            <summary>
+            Returns whether the specified box is fully contained inside this nav area.
+            </summary>
+            <param name="mins">Minimum bounds of the box.</param>
+            <param name="maxs">Maximum bounds of the box.</param>
+            <param name="zTolerance">Allowed Z distance from the nav area surface.</param>
+            <returns><see langword="true"/> if the box is contained inside this nav area; otherwise, <see langword="false"/>.</returns>
+        </member>
+        <member name="M:CounterStrikeSharp.API.Core.CCSNavArea.IntersectsBox(CounterStrikeSharp.API.Modules.Utils.Vector,CounterStrikeSharp.API.Modules.Utils.Vector,System.Single)">
+            <summary>
+            Returns whether the specified box intersects this nav area.
+            </summary>
+            <param name="mins">Minimum bounds of the box.</param>
+            <param name="maxs">Maximum bounds of the box.</param>
+            <param name="zTolerance">Allowed Z distance from the nav area surface.</param>
+            <returns><see langword="true"/> if the box intersects this nav area; otherwise, <see langword="false"/>.</returns>
+        </member>
+        <member name="M:CounterStrikeSharp.API.Core.CCSNavArea.GetClosestPoint(CounterStrikeSharp.API.Modules.Utils.Vector)">
+            <summary>
+            Gets the closest point on this nav area to the specified position.
+            </summary>
+            <param name="position">World position to compare against.</param>
+            <returns>The closest point on this nav area.</returns>
+        </member>
+        <member name="M:CounterStrikeSharp.API.Core.CCSNavArea.GetDistanceToPoint(CounterStrikeSharp.API.Modules.Utils.Vector)">
+            <summary>
+            Gets the distance from this nav area to the specified position.
+            </summary>
+            <param name="position">World position to compare against.</param>
+            <returns>The distance to this nav area.</returns>
+        </member>
+        <member name="M:CounterStrikeSharp.API.Core.CCSNavArea.GetClosestNavArea(CounterStrikeSharp.API.Modules.Utils.Vector,System.Single)">
+            <summary>
+            Gets the closest nav area to the specified position.
+            </summary>
+            <param name="position">World position to compare against.</param>
+            <param name="maximumDistance">Maximum search distance. A value less than or equal to zero disables the limit.</param>
+            <returns>The closest nav area, or <see langword="null"/> if none was found.</returns>
+        </member>
+        <member name="M:CounterStrikeSharp.API.Core.CCSNavArea.GetClosestNavArea(CounterStrikeSharp.API.Modules.Utils.Vector,System.Single@,System.Single)">
+            <summary>
+            Gets the closest nav area to the specified position and outputs its distance.
+            </summary>
+            <param name="position">World position to compare against.</param>
+            <param name="distance">Distance to the closest nav area, or <see cref="F:System.Single.MaxValue"/> if none was found.</param>
+            <param name="maximumDistance">Maximum search distance. A value less than or equal to zero disables the limit.</param>
+            <returns>The closest nav area, or <see langword="null"/> if none was found.</returns>
+        </member>
+        <member name="M:CounterStrikeSharp.API.Core.CCSNavArea.GetAllNavAreas">
+            <summary>
+            Gets all nav areas from the current nav mesh.
+            </summary>
+            <returns>All nav areas, or an empty list if the nav mesh is unavailable.</returns>
+        </member>
         <member name="M:CounterStrikeSharp.API.Core.CCSPlayerController.GiveNamedItem(System.String)">
             <exception cref="T:System.InvalidOperationException">Entity is not valid</exception>
         </member>

@@ -1018,7 +1018,7 @@
             <param name="caller">Entity that is sending the event, <see langword="null"/> for no entity</param>
             <param name="value">String variant value to send with the event</param>
             <param name="delay">Delay in seconds before calling the input</param>
-            <param name="outputId">Unknown, defaults to 0</param>
+            <param name="outputId">Removed from the current CS2 game ABI</param>
             <exception cref="T:System.InvalidOperationException">Entity is not valid</exception>
         </member>
         <member name="M:CounterStrikeSharp.API.Core.CGameSceneNode.GetSkeletonInstance">

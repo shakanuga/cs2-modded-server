@@ -3,30 +3,55 @@
 # As root (sudo su)
 # cd / && curl -s -H "Cache-Control: no-cache" -o "run.sh" "https://raw.githubusercontent.com/kus/cs2-modded-server/master/run.sh" && chmod +x run.sh && bash run.sh
 
-# Function to safely enable unprivileged user namespaces
+# Function to safely enable unprivileged user namespaces.
+# Steam's runtime sandboxes the game with bwrap (pressure-vessel), which needs
+# unprivileged user namespaces. Different distro/kernel versions gate these behind
+# different sysctls, so we probe for each knob and only touch the ones that exist:
+#   - kernel.apparmor_restrict_unprivileged_userns : Ubuntu 24.04+ AppArmor lockdown.
+#       Left at its default of 1 it causes "bwrap: setting up uid map: Permission denied".
+#   - kernel.unprivileged_userns_clone             : older Ubuntu (<= 23.10) / Debian.
+# Settings are also written to /etc/sysctl.d so they survive reboots (GCP VMs reset
+# runtime sysctl changes on restart).
 enable_unprivileged_namespaces() {
-    # Check if the sysctl parameter exists (some kernels don't have it)
-    if ! sysctl kernel.unprivileged_userns_clone >/dev/null 2>&1; then
-        echo "Info: kernel.unprivileged_userns_clone not available on this system"
-        return 0
-    fi
-    
-    # Check current value
-    local current_value=$(sysctl -n kernel.unprivileged_userns_clone 2>/dev/null)
-    
-    if [ "$current_value" != "1" ]; then
-        echo "Enabling unprivileged user namespaces..."
-        if sudo sysctl kernel.unprivileged_userns_clone=1; then
-            echo "Successfully enabled unprivileged user namespaces"
-            return 0
+    local persist_file="/etc/sysctl.d/99-cs2-userns.conf"
+    local persist=""
+
+    # Ubuntu 24.04+ : AppArmor blocks unprivileged userns even when otherwise allowed.
+    if sysctl kernel.apparmor_restrict_unprivileged_userns >/dev/null 2>&1; then
+        if [ "$(sysctl -n kernel.apparmor_restrict_unprivileged_userns 2>/dev/null)" != "0" ]; then
+            echo "Disabling AppArmor restriction on unprivileged user namespaces (Ubuntu 24.04+)..."
+            sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 \
+                && echo "Successfully disabled AppArmor userns restriction" \
+                || echo "Warning: Failed to disable AppArmor userns restriction"
         else
-            echo "Warning: Failed to enable unprivileged user namespaces"
-            return 1
+            echo "AppArmor userns restriction already disabled"
         fi
-    else
-        echo "Unprivileged user namespaces already enabled"
+        persist+="kernel.apparmor_restrict_unprivileged_userns=0"$'\n'
+    fi
+
+    # Older Ubuntu / Debian : userns gated behind unprivileged_userns_clone.
+    if sysctl kernel.unprivileged_userns_clone >/dev/null 2>&1; then
+        if [ "$(sysctl -n kernel.unprivileged_userns_clone 2>/dev/null)" != "1" ]; then
+            echo "Enabling unprivileged user namespaces..."
+            sudo sysctl -w kernel.unprivileged_userns_clone=1 \
+                && echo "Successfully enabled unprivileged user namespaces" \
+                || echo "Warning: Failed to enable unprivileged user namespaces"
+        else
+            echo "Unprivileged user namespaces already enabled"
+        fi
+        persist+="kernel.unprivileged_userns_clone=1"$'\n'
+    fi
+
+    if [ -z "$persist" ]; then
+        echo "Info: no unprivileged user namespace sysctls available on this system"
         return 0
     fi
+
+    # Persist so the fix survives reboots.
+    { echo "# Managed by cs2-modded-server: allow unprivileged user namespaces for Steam runtime (bwrap)"; \
+      printf '%s' "$persist"; } | sudo tee "$persist_file" >/dev/null 2>&1 \
+        && echo "Persisted user namespace settings to $persist_file"
+    return 0
 }
 
 user="steam"

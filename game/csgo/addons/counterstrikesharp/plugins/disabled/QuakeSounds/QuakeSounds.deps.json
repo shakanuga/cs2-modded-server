@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v10.0": {
-      "QuakeSounds/26.06.1": {
+      "QuakeSounds/26.06.2": {
         "runtime": {
           "QuakeSounds.dll": {}
         }
@@ -14,7 +14,7 @@
     }
   },
   "libraries": {
-    "QuakeSounds/26.06.1": {
+    "QuakeSounds/26.06.2": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -2005,6 +2005,53 @@
             </summary>
             <exception cref="T:System.Exception"></exception>
         </member>
+        <member name="T:CounterStrikeSharp.API.Modules.Utils.Contents">
+            <summary>
+            Contents flags for physics interaction layers (bspflags.h / const.h).
+            Used with <see cref="T:CounterStrikeSharp.API.Modules.Utils.TraceOptions"/> and <see cref="M:CounterStrikeSharp.API.Modules.Utils.Trace.PointContents(CounterStrikeSharp.API.Modules.Utils.Vector,CounterStrikeSharp.API.Modules.Utils.Contents)"/>.
+            </summary>
+        </member>
+        <member name="T:CounterStrikeSharp.API.Modules.Utils.Masks">
+            <summary>
+            Composite trace masks (bspflags.h MASK_* defines).
+            </summary>
+        </member>
+        <member name="F:CounterStrikeSharp.API.Modules.Utils.Masks.Solid">
+            <summary>Everything that is normally solid.</summary>
+        </member>
+        <member name="F:CounterStrikeSharp.API.Modules.Utils.Masks.PlayerSolid">
+            <summary>Everything that blocks player movement.</summary>
+        </member>
+        <member name="F:CounterStrikeSharp.API.Modules.Utils.Masks.NpcSolid">
+            <summary>Blocks NPC movement.</summary>
+        </member>
+        <member name="F:CounterStrikeSharp.API.Modules.Utils.Masks.NpcFluid">
+            <summary>Blocks fluid movement.</summary>
+        </member>
+        <member name="F:CounterStrikeSharp.API.Modules.Utils.Masks.Water">
+            <summary>Water physics.</summary>
+        </member>
+        <member name="F:CounterStrikeSharp.API.Modules.Utils.Masks.Shot">
+            <summary>Bullets see these as solid.</summary>
+        </member>
+        <member name="F:CounterStrikeSharp.API.Modules.Utils.Masks.ShotBrushOnly">
+            <summary>Bullets see these as solid, except monsters (world + brush only).</summary>
+        </member>
+        <member name="F:CounterStrikeSharp.API.Modules.Utils.Masks.ShotHull">
+            <summary>Non-raycasted weapons see this as solid (includes grates).</summary>
+        </member>
+        <member name="F:CounterStrikeSharp.API.Modules.Utils.Masks.ShotPortal">
+            <summary>Hits solids (not grates) and passes through everything else.</summary>
+        </member>
+        <member name="F:CounterStrikeSharp.API.Modules.Utils.Masks.SolidBrushOnly">
+            <summary>Everything normally solid, except monsters (world + brush only).</summary>
+        </member>
+        <member name="F:CounterStrikeSharp.API.Modules.Utils.Masks.PlayerSolidBrushOnly">
+            <summary>Everything normally solid for player movement, except monsters (world + brush only).</summary>
+        </member>
+        <member name="F:CounterStrikeSharp.API.Modules.Utils.Masks.NpcSolidBrushOnly">
+            <summary>Everything normally solid for NPC movement, except monsters (world + brush only).</summary>
+        </member>
         <member name="M:CounterStrikeSharp.API.Modules.Utils.EnumUtils.GetEnumMemberAttribute``1(System.Enum)">
             <summary>
             Brute force search using Enum.GetNames as enum members pointing to other enum members do not have the correct attributes.
@@ -2015,6 +2062,67 @@
             A generic filter for determining whom to send message/sounds etc.
             to and providing a bit of additional state information
             </summary>
+        </member>
+        <member name="T:CounterStrikeSharp.API.Modules.Utils.TraceOptions">
+            <summary>Controls which physics layers a trace interacts with.</summary>
+        </member>
+        <member name="P:CounterStrikeSharp.API.Modules.Utils.TraceOptions.InteractsAs">
+            <summary>Which interaction layers the trace represents (analogous to Source 1 contents).</summary>
+        </member>
+        <member name="P:CounterStrikeSharp.API.Modules.Utils.TraceOptions.InteractsWith">
+            <summary>Which interaction layers the trace collides with (analogous to Source 1 trace mask).</summary>
+        </member>
+        <member name="P:CounterStrikeSharp.API.Modules.Utils.TraceOptions.InteractsExclude">
+            <summary>Which interaction layers are explicitly excluded.</summary>
+        </member>
+        <member name="T:CounterStrikeSharp.API.Modules.Utils.TraceResult">
+            <summary>
+            Result of a ray or hull trace.
+            Plain unmanaged value type — stack-allocated by the <see cref="T:CounterStrikeSharp.API.Modules.Utils.Trace"/> methods and returned
+            by value. No heap allocation, no disposal. Layout matches <c>CSSTraceResult</c> in
+            <c>natives_raytrace.cpp</c>.
+            </summary>
+        </member>
+        <member name="M:CounterStrikeSharp.API.Modules.Utils.TraceResult.Hitbox">
+            <summary>Native <c>CHitBox*</c> — opaque pointer.</summary>
+        </member>
+        <member name="M:CounterStrikeSharp.API.Modules.Utils.TraceResult.Body">
+            <summary>Native <c>HPhysicsBody</c> — opaque pointer.</summary>
+        </member>
+        <member name="M:CounterStrikeSharp.API.Modules.Utils.TraceResult.Shape">
+            <summary>Native <c>HPhysicsShape</c> — opaque pointer.</summary>
+        </member>
+        <member name="M:CounterStrikeSharp.API.Modules.Utils.TraceResult.Surface">
+            <summary>Native <c>CPhysSurfaceProperties*</c> — opaque pointer.</summary>
+        </member>
+        <member name="T:CounterStrikeSharp.API.Modules.Utils.Trace">
+            <summary>
+            Static class for performing ray and hull traces against the game world.
+            </summary>
+        </member>
+        <member name="M:CounterStrikeSharp.API.Modules.Utils.Trace.TraceShape(CounterStrikeSharp.API.Modules.Utils.Vector,CounterStrikeSharp.API.Modules.Utils.QAngle,CounterStrikeSharp.API.Core.CBaseEntity,CounterStrikeSharp.API.Modules.Utils.TraceOptions)">
+            <summary>
+            Performs a line trace from <paramref name="startPos"/> in the direction of
+            <paramref name="angles"/> for up to 8192 units.
+            </summary>
+        </member>
+        <member name="M:CounterStrikeSharp.API.Modules.Utils.Trace.TraceEndShape(CounterStrikeSharp.API.Modules.Utils.Vector,CounterStrikeSharp.API.Modules.Utils.Vector,CounterStrikeSharp.API.Core.CBaseEntity,CounterStrikeSharp.API.Modules.Utils.TraceOptions)">
+            <summary>Performs a line trace between two world-space points.</summary>
+        </member>
+        <member name="M:CounterStrikeSharp.API.Modules.Utils.Trace.TraceHullShape(CounterStrikeSharp.API.Modules.Utils.Vector,CounterStrikeSharp.API.Modules.Utils.Vector,CounterStrikeSharp.API.Modules.Utils.Vector,CounterStrikeSharp.API.Modules.Utils.Vector,CounterStrikeSharp.API.Core.CBaseEntity,CounterStrikeSharp.API.Modules.Utils.TraceOptions)">
+            <summary>Performs a hull (box) trace between two world-space points.</summary>
+        </member>
+        <member name="M:CounterStrikeSharp.API.Modules.Utils.Trace.PointContents(CounterStrikeSharp.API.Modules.Utils.Vector,CounterStrikeSharp.API.Modules.Utils.Contents)">
+            <summary>Returns the contents bitmask at the given world position.</summary>
+        </member>
+        <member name="M:CounterStrikeSharp.API.Modules.Utils.Trace.CheckAreaOverlappingEntity(CounterStrikeSharp.API.Core.CCSNavArea,CounterStrikeSharp.API.Core.CBaseEntity,System.Boolean)">
+            <summary>
+            Returns whether a nav area overlaps with an entity's bounding box.
+            <paramref name="area"/> is an opaque pointer to a <c>CNavArea</c> obtained from the nav system.
+            </summary>
+        </member>
+        <member name="M:CounterStrikeSharp.API.Modules.Utils.Trace.GetEntityWorldSpaceAABB(CounterStrikeSharp.API.Core.CBaseEntity,CounterStrikeSharp.API.Modules.Utils.Vector@,CounterStrikeSharp.API.Modules.Utils.Vector@)">
+            <summary>Returns the world-space axis-aligned bounding box of <paramref name="entity"/>.</summary>
         </member>
         <member name="T:CounterStrikeSharp.API.Modules.Utils.Vector">
             <summary>

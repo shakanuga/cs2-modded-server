@@ -18,6 +18,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     dnsutils \
     lib32z1 \
+    libicu-dev \
     wget \
     && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
     && dpkg-reconfigure --frontend=noninteractive locales \

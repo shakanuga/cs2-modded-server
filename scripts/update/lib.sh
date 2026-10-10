@@ -319,6 +319,28 @@ extract_asset() {
     printf '%s\n' "$dir"
 }
 
+# Prints the first of several candidate directories that exists, for releases whose
+# archive root moves between versions. Fails if none of them do, so a third layout is
+# still caught rather than silently skipped.
+# In dry-run nothing has been extracted, so the first candidate is assumed and reported.
+# Use as: root=$(pick_dir "$x/new/layout" "$x/old/layout")
+pick_dir() {
+    local d
+    if is_dry; then
+        dry "use the first of these that exists: $*"
+        printf '%s\n' "$1"
+        return 0
+    fi
+    for d in "$@"; do
+        if [ -d "$d" ]; then
+            info "archive root: $d"
+            printf '%s\n' "$d"
+            return 0
+        fi
+    done
+    die "none of these directories exist in the extracted release, so the archive layout changed again: $*"
+}
+
 # Deletes a directory produced by extract_asset.
 remove_extracted() {
     local d="$1"
@@ -479,6 +501,27 @@ verify_containment() {
         if [ "$ok" = 0 ]; then err "unexpected change outside the plugin's paths: $p"; bad=1; fi
     done < <(changed_paths)
     return "$bad"
+}
+
+# Two paths differing only in case cannot coexist on a case-insensitive filesystem, so
+# committing both breaks every macOS checkout: git picks one, and the other is reported
+# modified forever, and discarding it just flips which one is dirty. The Linux runner can
+# hold both quite happily, which is exactly why this has to be checked rather than noticed.
+# It happens when upstream renames a file by case only and a merge-style copy adds the new
+# name without removing the old one (MatchZy renamed lang/pt-pt.json to lang/pt-PT.json in
+# 0.9.0). Covers tracked and new-but-unignored files, because this runs before staging.
+verify_no_case_duplicates() {
+    local all dupes d
+    all=$(git ls-files --cached --others --exclude-standard)
+    dupes=$(printf '%s\n' "$all" | sort -f | uniq -di)
+    [ -z "$dupes" ] && return 0
+    err "these paths differ only in case, which breaks checkouts on macOS:"
+    while IFS= read -r d; do
+        [ -n "$d" ] || continue
+        printf '%s\n' "$all" | grep -ixF "$d" | sed 's/^/          /' >&3
+    done <<< "$dupes"
+    err "upstream probably renamed a file by case. Delete the stale name from the repo, then re-run."
+    return 1
 }
 
 # True if at least one changed path is inside PLUGIN_PATHS (i.e. the update changed files).

@@ -5,8 +5,11 @@
   "aimbot": "Aimbot",
   "aimbot_desc": "Every bullet you hit counts as a headshot",
 
+  "aimlock": "Aim Lock",
+  "aimlock_desc": "Click [css_useSkill] to lock your aim on the nearest enemy",
+
   "anomaly": "Anomaly",
-  "anomaly_desc": "You rewind a few seconds back in time",
+  "anomaly_desc": "Click [css_useSkill] to rewind a few seconds back in time",
 
   "antyflash": "Anti-Flash",
   "antyflash_desc": "You are immune to flashbangs, and your flashbangs last 7 seconds",
@@ -21,6 +24,8 @@
   "areareaper_select_info": "Select site to deactivate:",
   "areareaper_site_disabled": "Bomb site {0} has been deactivated - no bombs can be planted there!",
   "areareaper_used_info": "Your skill has already been used.",
+  "areareaper_teammates_info": "Bombsite {0} has been blocked for planting.",
+  "areareaper_bombsite_disabled": "This bombsite has been disabled!",
 
   "armored": "Armored",
   "armored_desc": "You have a random damage taken multiplier",
@@ -46,8 +51,21 @@
   "behind_desc": "You have a random chance to turn an enemy 180 degrees when hitting them",
   "behind_desc2": "Your chance to turn an enemy on hit is: {0}%",
 
+  "berserker": "Berserker",
+  "berserker_desc": "You deal more damage and move faster as your health gets lower",
+
   "blademaster": "Blademaster",
   "blademaster_desc": "While holding a knife, you have a high chance to deflect a shot",
+
+  "blastshot": "Blast Shot",
+  "blastshot_desc": "Press Attack2 with the MP5 to fire an HE grenade",
+
+  "bounty": "Bounty",
+  "bounty_desc": "Put a price on an enemy's head; whoever kills them takes the money",
+  "bounty_select_info": "Choose a player:",
+  "bounty_player_info": "You put a {1}$ bounty on '{0}'.",
+  "bounty_enemy_info": "A {0}$ bounty was placed on your head.",
+  "bounty_claimed_info": "You killed '{0}' and claimed {1}$.",
 
   "bunnyhop": "Bunny",
   "bunnyhop_desc": "You get auto \"BunnyHop\"",
@@ -58,12 +76,18 @@
   "carefulbullets": "Careful Bullets",
   "carefulbullets_desc": "Select a player who takes damage for every missed shot",
   "carefulbullets_enemy_info": "From now on, inaccuracy will literally hurt.",
+  "carefulbullets_disable_info": "Missing shots no longer hurts you.",
   "carefulbullets_player_info": "'{0}' must now be more careful.",
   "carefulbullets_select_info": "Inaccuracy hurts the player:",
 
   "catapult": "Catapult",
   "catapult_desc": "You have a random chance to launch an enemy upwards",
   "catapult_desc2": "Your chance to launch an enemy on hit is: {0}%",
+
+  "chameleon": "Chameleon",
+  "chameleon_desc": "The first player you kill gives you their skill",
+  "chameleon_copied_info": "You copied the skill: {0}",
+  "chameleon_wrong_team_info": "'{0}' had a skill your team cannot use.",
 
   "chicken": "Chicken",
   "chicken_desc": "You get a chicken model + 10% faster movement - 50 HP",
@@ -81,6 +105,7 @@
   "darkness": "Darkness",
   "darkness_desc": "Applies a darkness effect to a chosen enemy",
   "darkness_enemy_info": "Let the lights go out.",
+  "darkness_disable_info": "The lights are back on.",
   "darkness_player_info": "Darkness has overtaken player '{0}'.",
   "darkness_select_info": "Select player for darkness:",
 
@@ -93,6 +118,7 @@
   "deaf": "Deaf",
   "deaf_desc": "Choose a player to mute all sounds for",
   "deaf_enemy_info": "Your headphones have left the game.",
+  "deaf_disable_info": "You can hear again.",
   "deaf_player_info": "Sound has been disabled for player '{0}'.",
   "deaf_select_info": "Mute all sounds for player:",
 
@@ -118,8 +144,22 @@
   "dwarf_desc": "Random character size at the start of the round",
   "dwarf_desc2": "Your size multiplier is: {0}x",
 
+  "empgrenade": "EMP Grenade",
+  "empgrenade_desc": "Anyone hurt by your grenade loses their radar and crosshair for a while",
+  "empgrenade_enemy_info": "An EMP grenade knocked out your radar and crosshair.",
+
   "enemyspawn": "Enemy Spawn",
   "enemyspawn_desc": "Click [css_useSkill] to teleport to the enemy spawn",
+
+  "expensiveammo": "Expensive Ammo",
+  "expensiveammo_desc": "A chosen enemy has to pay for every shot",
+  "expensiveammo_disable_info": "Your bullets are free again.",
+  "expensiveammo_enemy_info": "Every shot you fire now costs you {0}$.",
+  "expensiveammo_player_info": "Player '{0}' now has to pay for every bullet.",
+  "expensiveammo_select_info": "Select a player whose ammo will become expensive:",
+
+  "explodingbarrel": "Exploding Barrel",
+  "explodingbarrel_desc": "Click [css_useSkill] to place a barrel that explodes when shot",
 
   "explosiveshot": "Explosive Shot",
   "explosiveshot_desc": "Random chance to fire an explosive bullet while shooting",
@@ -131,9 +171,15 @@
   "fastreload": "Fastreload",
   "fastreload_desc": "Click [css_useSkill] to reload the weapon you are currently holding",
 
+  "firerain": "Fire Rain",
+  "firerain_desc": "Throw a decoy to call down a rain of Molotovs",
+
   "flash": "Flash",
   "flash_desc": "Random player speed at the beginning of the round",
   "flash_desc2": "Your speed multiplier is: {0}x",
+
+  "flashlight": "Flashlight",
+  "flashlight_desc": "Click [css_useSkill] to turn the flashlight on or off. Its light can blind enemies",
 
   "fortnite": "Fortnite",
   "fortnite_desc": "Click [css_useSkill] to create a destructible barricade",
@@ -157,12 +203,21 @@
   "ghost": "Ghost",
   "ghost_desc": "You are completely invisible",
 
+  "giant": "Giant",
+  "giant_desc": "Enlarge an enemy of your choice",
+  "giant_desc2": "Enlarge an enemy of your choice to {0}x their normal size",
+  "giant_disable_info": "You are back to your normal size.",
+  "giant_enemy_info": "You have been enlarged to {0}x your normal size.",
+  "giant_player_info": "You enlarged player '{0}' to {1}x their normal size.",
+  "giant_select_info": "Select a player to enlarge:",
+
   "glaz": "Glaz",
   "glaz_desc": "You can see through smoke grenades",
 
   "glitch": "Glitch",
   "glitch_desc": "Disables the radar for a chosen enemy",
   "glitch_enemy_info": "Your radar has been disabled.",
+  "glitch_disable_info": "Your radar is back to normal.",
   "glitch_player_info": "Player '{0}'s radar has been disabled.",
   "glitch_select_info": "Turn off player's radar:",
 
@@ -174,11 +229,25 @@
   "godmode_off": "Immortality disabled",
   "godmode_on": "Immortality enabled",
 
+  "grapple": "Grapple Hook",
+  "grapple_desc": "Press [css_useSkill] to fire a hook at the point you are aiming at and pull yourself there",
+  "grapple_no_anchor_info": "No surface to hook onto.",
+  "grapple_pulling_info": "PULLING",
+
+  "gravitydecoy": "Gravity Decoy",
+  "gravitydecoy_desc": "Your decoy changes the gravity of everyone nearby",
+
   "grenadier": "Grenadier",
-  "grenadier_desc": "You have infinite hegranade",
+  "grenadier_desc": "You have infinite hegrenade",
+
+  "healingchicken": "Healing Chicken",
+  "healingchicken_desc": "Your chickens heal you while you are nearby",
 
   "healingsmoke": "Healing Smoke",
   "healingsmoke_desc": "Your smoke grenades heal",
+
+  "heavyweight": "Heavyweight",
+  "heavyweight_desc": "Skills that push or slow you down have no effect on you",
 
   "hermit": "Hermit",
   "hermit_desc": "Killing restores ammo and a portion of health",
@@ -186,8 +255,23 @@
   "holyhandgrenade": "Holy Hand Grenade",
   "holyhandgrenade_desc": "Your HE grenades deal double damage and have double range",
 
+  "homingnades": "Homing Grenades",
+  "homingnades_desc": "Your grenades (except smokes) are attracted to enemies",
+
+  "hotbomb": "Hot Bomb",
+  "hotbomb_desc": "As long as you are alive, the bomb deals damage to its carrier",
+  "hotbomb_hint": "Careful, the bomb is hot!",
+  "hotbomb_disable_info": "The bomb is no longer hot.",
+
   "iana": "Hologram",
   "iana_desc": "Click [css_useSkill] to control your hologram for a few seconds",
+
+  "illiterate": "Illiterate",
+  "illiterate_desc": "As long as you are alive, your enemies cannot read",
+  "illiterate_alert": "Illiterate is active! You cannot read messages until the owner of this skill is eliminated",
+
+  "illusionist": "Illusionist",
+  "illusionist_desc": "Click [css_useSkill] to deploy a replica that walks straight ahead",
 
   "impostor": "Impostor",
   "impostor_desc": "You start the round with an enemy player model",
@@ -195,12 +279,18 @@
   "infiniteammo": "Infinite Ammo",
   "infiniteammo_desc": "You receive infinite ammo for all your weapons",
 
+  "inheritance": "Inheritance",
+  "inheritance_desc": "When a teammate dies you can take over their skill",
+  "inheritance_select_info": "Choose the skill you inherit:",
+  "inheritance_player_info": "You inherited the skill of '{0}'.",
+
   "jackal": "Tracker",
   "jackal_desc": "Every opponent leaves a trail behind them",
 
   "jammer": "Jammer",
   "jammer_desc": "Choose a player to disable their crosshair",
   "jammer_enemy_info": "Your crosshair has been disabled.",
+  "jammer_disable_info": "Your crosshair is back to normal.",
   "jammer_player_info": "Player '{0}'s crosshair has been disabled.",
   "jammer_select_info": "Disable player's crosshair:",
 
@@ -210,17 +300,38 @@
   "jester_on": "ON",
   "jester_off": "OFF",
 
+  "jetkick": "Jetkick",
+  "jetkick_desc": "Select a player to jetkick",
+  "jetkick_select_info": "Select a player to jetkick:",
+  "jetkick_player_info": "Player '{0}' has been jetkicked.",
+  "jetkick_enemy_info": "Every shot knocks you backwards",
+  "jetkick_disable_info": "Your recoil is back to normal.",
+
   "jumpban": "Legless",
   "jumpban_desc": "Choose a player who cannot jump",
   "jumpban_enemy_info": "Someone cut off your legs.",
+  "jumpban_disable_info": "You can use your legs again.",
   "jumpban_player_info": "Player '{0}' can no longer jump.",
   "jumpban_select_info": "Ban player from jumping:",
+
+  "jumpcurse": "Jump Curse",
+  "jumpcurse_desc": "A chosen enemy jumps whenever one of their teammates jumps",
+  "jumpcurse_disable_info": "You can control your jumps again.",
+  "jumpcurse_enemy_info": "You now jump whenever one of your teammates jumps.",
+  "jumpcurse_player_info": "Player '{0}' now jumps whenever their teammates do.",
+  "jumpcurse_select_info": "Select a player to curse:",
 
   "jumpingjack": "Jumping Jack",
   "jumpingjack_desc": "Jumping restores health",
 
   "killerflash": "Killer Flash",
   "killerflash_desc": "Anyone fully blinded by your flashbang dies (including you)",
+
+  "knockback": "Knockback",
+  "knockback_desc": "Firing while airborne pushes you backwards",
+
+  "lastgasp": "Last Gasp",
+  "lastgasp_desc": "After you die, you deal damage to the enemy who killed you",
 
   "lifeswap": "Life Swap",
   "lifeswap_desc": "Choose a player to swap health with",
@@ -234,14 +345,24 @@
   "longzeus": "Long Zeus",
   "longzeus_desc": "Zeus deals damage regardless of distance",
 
+  "magneticdecoy": "Magnetic Decoy",
+  "magneticdecoy_desc": "Your decoy attracts nearby players towards itself",
+
+  "magneto": "Magneto",
+  "magneto_desc": "All enemy grenades are repelled away from you",
+
   "magnifier": "Magnifier",
   "magnifier_desc": "Forces the enemy's screen to zoom in, reducing their field of view",
   "magnifier_enemy_info": "Your field of view has been distorted!",
+  "magnifier_disable_info": "Your vision is back to normal.",
   "magnifier_player_info": "Player '{0}' has been forced into zoom mode.",
   "magnifier_select_info": "Magnify player's screen:",
 
   "medic": "Medic",
   "medic_desc": "Click [css_useSkill] to use a healing charge that restores 50 health",
+
+  "miner": "Bomb Miner",
+  "miner_desc": "Your HE grenade only explode when there is an enemy nearby",
 
   "bankrupt": "Bankrupt",
   "bankrupt_desc": "Choose the player who will lose all their money",
@@ -249,9 +370,25 @@
   "bankrupt_player_info": "Player '{0}' has gone bankrupt.",
   "bankrupt_select_info": "Pick a player to go bankrupt:",
 
-  "muhammed": "Muhammed",
-  "muhammed_desc": "You explode upon death, killing nearby players",
-  "muhammed_explosion": "ALLAHU AKBAR!!!",
+  "deathbomb": "Death Bomb",
+  "deathbomb_desc": "You explode upon death, killing nearby players",
+  "deathbomb_explosion": "Kaboom!",
+
+  "demoneye": "Demon Eye",
+  "demoneye_desc": "You deal damage to every enemy you are looking at",
+
+  "nemesis": "Nemesis",
+  "nemesis_desc": "The player you mark takes extra damage",
+  "nemesis_select_info": "Choose a player:",
+  "nemesis_player_info": "You marked '{0}'.",
+  "nemesis_enemy_info": "You have been marked as a nemesis, you now take extra damage from everyone.",
+
+  "nightmare": "Nightmare",
+  "nightmare_desc": "Force a chosen enemy to experience a terrifying vision",
+  "nightmare_disable_info": "The nightmare has faded.",
+  "nightmare_enemy_info": "A nightmare is clouding your vision.",
+  "nightmare_player_info": "You cast a nightmare on player '{0}'.",
+  "nightmare_select_info": "Select a player to inflict with a nightmare:",
 
   "ninja": "Ninja",
   "ninja_desc": "Standing still increases your invisibility by 33%, crouching by 33%, and holding a knife by 33%",
@@ -285,26 +422,33 @@
   "psychicdefusing_hud_info": "{0} seconds remaining to defuse",
 
   "pilot": "Pilot",
-  "pilot_desc": "Fly for a limited time. Hold [USE - E] to fly",
+  "pilot_desc": "Fly for a limited time. Double-click the jump to fly",
   "pilot_hud_info": "Fuel",
 
   "planter": "Free Planter",
   "planter_desc": "You can plant the bomb anywhere, with a detonation time of 60 seconds.",
+  "planter_planting": "Planting ({0})...",
 
   "poison": "Poison",
   "poison_desc": "Choose a player who will take damage every few seconds",
   "poison_enemy_info": "You have been poisoned.",
+  "poison_disable_info": "You are now immune to poison.",
   "poison_player_info": "Player '{0}' has been poisoned.",
   "poison_select_info": "Poison a player:",
 
   "primaryban": "No Rifles",
   "primaryban_desc": "Choose a player who cannot use rifles",
   "primaryban_enemy_info": "You can no longer use rifles.",
+  "primaryban_disable_info": "You can use rifles again.",
   "primaryban_player_info": "Player '{0}' can no longer use rifles.",
   "primaryban_select_info": "Ban rifles for player:",
 
   "prosthesis": "Prosthesis",
   "prosthesis_desc": "Arms and legs are bulletproof",
+
+  "punisher": "Punisher",
+  "punisher_desc": "You bank part of the damage you take and add it to your next hit",
+  "punisher_released_info": "You dealt {0} extra damage and healed for the same amount.",
 
   "push": "Pusher",
   "push_desc": "You have a random chance to push an enemy back when hitting them",
@@ -343,8 +487,15 @@
   "returntosender": "Return to Sender",
   "returntosender_desc": "The first hit on an enemy sends them back to their spawn",
 
+  "rewind": "Rewind",
+  "rewind_desc": "Click [css_useSkill] to drop a marker where you stand and return to it shortly after",
+  "rewind_pending_info": "RETURN: {0}",
+
   "richboy": "Rich Boy",
   "richboy_desc": "You receive a random amount of money at the start of the round",
+
+  "ricochet": "Ricochet",
+  "ricochet_desc": "Your bullets bounce off walls and can still hit enemies",
 
   "robinhood": "Robin Hood",
   "robinhood_desc": "Dealing damage to an enemy steals their money",
@@ -369,6 +520,9 @@
   "silent": "Silent",
   "silent_desc": "Your footsteps and jumps are silent to OTHER players",
 
+  "smoker": "Smoker",
+  "smoker_desc": "Your smoke grenades never run out",
+
   "sniperelite": "Sniper Elite",
   "sniperelite_customname": "Sniper Elite Skill",
   "sniperelite_desc": "Click [css_useSkill] to swap your current weapon for an AWP",
@@ -378,7 +532,7 @@
   "soldier_desc2": "Your damage multiplier is: {0}x",
 
   "soundmaker": "Soundmaker",
-  "soundmaker_desc": "Click [css_useSkill] to trigger a sound for every enemy",
+  "soundmaker_desc": "Every now and then, you hear player screams",
 
   "spectator": "Spectator",
   "spectator_desc": "Click [css_useSkill] to spectate a random enemy",
@@ -386,8 +540,20 @@
   "swapposition": "Position Swap",
   "swapposition_desc": "Click [css_useSkill] to swap places with a random enemy",
 
+  "takeammo": "Take Ammo",
+  "takeammo_desc": "Click [css_useSkill] to take the active weapon's magazine from a random enemy",
+  "takeammo_hud_info1": "No player with an active magazine was found.",
+  "takeammo_hud_info2": "The enemy has no magazines.",
+  "takeammo_enemy_info": "You lost some ammo.",
+
+  "teamteleport": "Team Teleport",
+  "teamteleport_desc": "Press [css_useSkill] to teleport to the teammate you're looking at",
+  "teamteleport_noenemy": "No teammate found",
+  "teamteleport_hud_info": "Found: {0}",
+
   "teleporter": "Teleporter",
-  "teleporter_desc": "You swap places with the hit enemy",
+  "teleporter_desc": "You have the chance to swap places with a hit enemy",
+  "teleporter_desc2": "Your chances of swapping places after a hit: {0}%",
 
   "thief": "Thief",
   "thief_desc": "You can steal a skill from a chosen player",
@@ -402,8 +568,25 @@
   "thorns": "Thorns",
   "thorns_desc": "Your opponent will receive a portion of the damage that they inflicted on you",
 
+  "throwingknife": "Throwing Knife",
+  "throwingknife_desc": "Click [css_useSkill] to throw a knife. But watch out for others",
+
   "toxicsmoke": "Toxic Smoke",
   "toxicsmoke_desc": "Your smoke grenades deal damage",
+
+  "tripwire": "Tripwire",
+  "tripwire_desc": "Click [css_useSkill] to string a wire between two walls. Enemies who touch it appear on your radar",
+  "tripwire_no_wall_info": "There are no walls close enough on both sides.",
+  "tripwire_placed_info": "Tripwire placed.",
+  "tripwire_triggered_info": "'{0}' triggered your tripwire.",
+
+  "truearmor": "True Armor",
+  "truearmor_desc": "Part of the damage you take is paid by your armor instead of your health",
+
+  "voodoo": "Voodoo",
+  "voodoo_desc": "The enemy you mark also takes part of the damage you take",
+  "voodoo_select_info": "Choose a player:",
+  "voodoo_player_info": "You bound '{0}' to your voodoo.",
 
   "wallhack": "Wallhack",
   "wallhack_desc": "You can see enemies through walls",
@@ -416,6 +599,16 @@
   "weaponsswap": "Weapon Swap",
   "weaponsswap_desc": "Click [css_useSkill] to swap weapons with a random enemy",
   "weaponsswap_hud_info2": "You have no weapon to swap",
+
+  "weightless": "Weightlessness",
+  "weightless_desc": "Your grenades are not affected by gravity and fly faster",
+
+  "wildthrow": "Wild Throws",
+  "wildthrow_desc": "Choose a player who will have trouble throwing grenades",
+  "wildthrow_player_info": "Player '{0}' has forgotten all their lineups",
+  "wildthrow_enemy_info": "You get too excited when throwing grenades.",
+  "wildthrow_disable_info": "Your memory of how to throw grenades is back to normal.",
+  "wildthrow_select_info": "Select a player:",
 
   "zeus": "Zeus",
   "zeus_desc": "Zeus x27 instantly recharges",
@@ -436,6 +629,7 @@
   "duplicate_player": "More than one player found with the same name.",
   "selectplayerskill_command": "Type /t",
   "selectplayerskill_incorrect_enemy_index": "No players were found to select.",
+  "curse_limit_info": "The curse limit for {0} has been reached",
 
   "skill_not_found_setskill": "No such CHATCOLORS.REDskill found",
   "player_not_found_setskill": "No such CHATCOLORS.REDplayer found",

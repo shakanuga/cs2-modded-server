@@ -1,20 +1,91 @@
-{
+﻿{
+  "ConfigName": "Default",
   "GameMode": 3,
   "YourSkillChatInfo": true,
   "KillerSkillChatInfo": true,
   "TeamMateSkillChatInfo": true,
   "SummaryAfterTheRound": true,
-  "DebugMode": false,
+  "EnableBotSkills": true,
+  "EnableBotKickDebug": false,
+  "EnableFullForceUpdate": false,
+  "DebugMode": 0,
+  "PerfMode": false,
   "AlternativeSkillButton": null,
   "SkillTimeBeforeStart": 7.0,
-  "SkillHudDuration": 999.0,
-  "SkillDescriptionDuration": 999.0,
+  "SkillHudDuration": -1.0,
+  "SkillDescriptionDuration": 7.0,
   "DisplayAlwaysDescription": false,
   "DisableSpectateHUD": false,
-  "FlashingHtmlHudFix": true,
-  "CS2TraceRayDebug": false,
+  "HideHudForOtherPlugins": true,
+  "EnableFlashingHtmlHudFix": false,
+  "TraceRayBeam": false,
   "DisableHUDOnDeathPermission": "@jRandomSkills/death",
   "DisableSkillsOnRoundEnd": false,
+  "VIPFlag": "@css/vip",
+  "SkillsChance": {
+    "Common": 0.7,
+    "Uncommon": 0.14,
+    "Rare": 0.1,
+    "Epic": 0.05,
+    "Legendary": 0.01
+  },
+  "VIPSkillsChance": {
+    "Common": 0.55,
+    "Uncommon": 0.23,
+    "Rare": 0.14,
+    "Epic": 0.07,
+    "Legendary": 0.01
+  },
+  "CurseSkillPerPlayer": null,
+  "ShowDecoyRing": true,
+  "Weapons": {
+    "Rifle": [
+      "weapon_ak47",
+      "weapon_m4a1",
+      "weapon_m4a1_silencer",
+      "weapon_famas",
+      "weapon_galilar",
+      "weapon_aug",
+      "weapon_sg556",
+      "weapon_mp9",
+      "weapon_mac10",
+      "weapon_bizon",
+      "weapon_mp7",
+      "weapon_ump45",
+      "weapon_p90",
+      "weapon_mp5sd",
+      "weapon_ssg08",
+      "weapon_awp",
+      "weapon_scar20",
+      "weapon_g3sg1",
+      "weapon_nova",
+      "weapon_xm1014",
+      "weapon_mag7",
+      "weapon_sawedoff",
+      "weapon_m249",
+      "weapon_negev"
+    ],
+    "Pistol": [
+      "weapon_deagle",
+      "weapon_revolver",
+      "weapon_glock",
+      "weapon_usp_silencer",
+      "weapon_cz75a",
+      "weapon_fiveseven",
+      "weapon_p250",
+      "weapon_tec9",
+      "weapon_elite",
+      "weapon_hkp2000"
+    ],
+    "Grenade": [
+      "weapon_hegrenade",
+      "weapon_flashbang",
+      "weapon_smokegrenade",
+      "weapon_molotov",
+      "weapon_incgrenade",
+      "weapon_decoy"
+    ]
+  },
   "LanguageSystem": {
     "DefaultLangCode": "en",
     "DisableGeoLite": false,
@@ -36,6 +107,18 @@
         "FileName": "de"
       },
       {
+        "IsoCodes": "RU, KZ, BY, KG, TJ, UZ, TM, AM, AZ, GE, MD",
+        "FileName": "ru"
+      },
+      {
+        "IsoCodes": "TR",
+        "FileName": "tr"
+      },
+      {
+        "IsoCodes": "CZ",
+        "FileName": "cs"
+      },
+      {
         "IsoCodes": "PL",
         "FileName": "pl"
       },
@@ -47,7 +130,7 @@
   },
   "HtmlHudCustomisation": {
     "HeaderLineColor": "#FFFFFF",
-    "HeaderLineSize": "ml",
+    "HeaderLineSize": "",
     "SkillLineSize": "l",
     "InfoLineColor": "#FFFFFF",
     "InfoLineSize": "sm",
@@ -58,6 +141,7 @@
     "WSADMenuItemLineColor": "white",
     "WSADMenuItemHoverLineColor": "orange",
     "WSADMenuItemLineSize": "sm",
+    "WSADMenuVisibleItems": 3,
     "WSADMenuControllsLineSize": "sm",
     "WSADMenuControllsLineColor1": "cyan",
     "WSADMenuControllsLineColor2": "white",
@@ -90,6 +174,18 @@
       "Alias": "heal, ulecz, curar, tratar, 治疗, 治愈",
       "Permissions": "@jRandomSkills/admin"
     },
+    "HealthCommand": {
+      "Alias": "sethealth, set_health, health",
+      "Permissions": "@jRandomSkills/admin"
+    },
+    "PlantedBomb": {
+      "Alias": "plantedbomb, planted_bomb, bomb",
+      "Permissions": "@jRandomSkills/admin"
+    },
+    "BotPlace": {
+      "Alias": "botplace, bot_place",
+      "Permissions": "@jRandomSkills/admin"
+    },
     "ConsoleCommand": {
       "Alias": "console, sv, 控制台, 服务器",
       "Permissions": "@jRandomSkills/owner"
@@ -109,6 +205,14 @@
     "ReloadCommand": {
       "Alias": "reload, refresh",
       "Permissions": "@jRandomSkills/admin"
+    },
+    "NextCommand": {
+      "Alias": "next_skill",
+      "Permissions": "@jRandomSkills/admin"
+    },
+    "CheckEntityCommand": {
+      "Alias": "ent, entity, checkentity, check_entity, sprawdzencje, checkent, check_ent, 检查实体",
+      "Permissions": "@jRandomSkills/owner"
     }
   },
   "VotingCommands": {
@@ -131,7 +235,7 @@
       "TimeToNextVoting": 15.0,
       "TimeToNextSameVoting": 500.0,
       "MinimumPlayersToStartVoting": 2,
-      "Alias": "map, mapa, changemap, zmienmape, zmienmape, mudarMapa, trocarMapa, 更换地图, 更改地图",
+      "Alias": "map, mapa, changemap, zmienmape, mudarMapa, trocarMapa, 更换地图, 更改地图",
       "Permissions": "@jRandomSkills/admin"
     },
     "SwapCommand": {

@@ -20,7 +20,7 @@
       "name": "Warcraft",
       "repo": "NightFuryPrime/CS2-Warcraft-Plugin",
       "asset": "*.zip",
-      "version": "3.3.5",
+      "version": "4.1.1",
       "dirs": [
         {
           "marker": "WarcraftPlugin.dll",

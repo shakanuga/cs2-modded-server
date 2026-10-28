@@ -53,6 +53,7 @@ for ((i = 0; i < count; i++)); do
     # Welche Ordner sind im Repo installiert?
     targets=()
     archives=()
+    keeps=()
     ndirs=$(jq '.dirs | length' <<<"$p")
     for ((d = 0; d < ndirs; d++)); do
         # "marker": Ordner im Archiv über eine Datei darin finden (z. B. die Plugin-DLL),
@@ -65,6 +66,7 @@ for ((i = 0; i < count; i++)); do
         if [ -n "$target" ]; then
             targets+=("$target")
             archives+=("$archive")
+            keeps+=("$(jq -r ".dirs[$d].keep // [] | join(\"\\n\")" <<<"$p")")
         fi
     done
     if [ ${#targets[@]} -eq 0 ]; then
@@ -132,7 +134,13 @@ for ((i = 0; i < count; i++)); do
             ok=0; break
         fi
         echo "ersetze $target"
-        if ! { rm -rf "$target" && cp -a "${found[0]}" "$target"; }; then
+        # "keep": Dateien im Repo-Ordner, die nicht überschrieben werden (eigene Configs).
+        keepdir="$dir/keep/$k"
+        mkdir -p "$keepdir"
+        while IFS= read -r kf; do
+            [ -n "$kf" ] && [ -f "$target/$kf" ] && mkdir -p "$keepdir/$(dirname "$kf")" && cp -a "$target/$kf" "$keepdir/$kf"
+        done <<<"${keeps[$k]}"
+        if ! { rm -rf "$target" && cp -a "${found[0]}" "$target" && cp -a "$keepdir/." "$target/"; }; then
             echo "FEHLER: Kopieren nach $target fehlgeschlagen" >&2
             ok=0; break
         fi

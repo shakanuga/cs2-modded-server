@@ -1,5 +1,5 @@
 {
-  "_info": "Eigene Plugins, die der kus-Updater nicht kennt. Wird von custom-plugins/update.sh gelesen. 'version' ist die im Repo liegende Version und wird vom Skript nach jedem Update hochgesetzt. Ein Ordner wird nur aktualisiert, wenn er im Repo schon existiert (nie neu installiert).",
+  "_info": "Eigene Plugins, die der kus-Updater nicht kennt. Wird von custom-plugins/update.sh gelesen. 'version' ist die im Repo liegende Version und wird vom Skript nach jedem Update hochgesetzt. Ein Ordner wird nur aktualisiert, wenn er im Repo schon existiert (nie neu installiert). Nicht vom Updater verwaltet (einmalig installiert): game/csgo/addons/metamod/BotController.vdf und BotVision.vdf.",
   "plugins": [
     {
       "name": "Hide and Seek",
@@ -35,7 +35,7 @@
       "name": "CS2 Bot Improver",
       "repo": "ed0ard/CS2-Bot-Improver",
       "asset": "CS2BotImprover_for_Linux.zip",
-      "version": "",
+      "version": "1.4.7",
       "dirs": [
         {
           "archive": "counterstrikesharp/plugins/BotAI",
@@ -80,27 +80,31 @@
           ]
         },
         {
-          "archive": "counterstrikesharp/data/NadeSystem",
+          "archive": "counterstrikesharp/plugins/BotControllerImpl",
           "repo": [
-            "game/csgo/addons/counterstrikesharp/data/NadeSystem"
+            "game/csgo/addons/counterstrikesharp/plugins/BotControllerImpl",
+            "game/csgo/addons/counterstrikesharp/plugins/disabled/BotControllerImpl"
           ]
         },
         {
-          "archive": "addons/BotVision",
+          "archive": "counterstrikesharp/shared/BotControllerApi",
           "repo": [
-            "game/csgo/addons/BotVision"
-          ]
-        },
-        {
-          "archive": "addons/BotHider",
-          "repo": [
-            "game/csgo/addons/BotHider"
+            "game/csgo/addons/counterstrikesharp/shared/BotControllerApi"
           ]
         },
         {
           "archive": "addons/BotController",
           "repo": [
             "game/csgo/addons/BotController"
+          ]
+        },
+        {
+          "archive": "addons/BotVision",
+          "repo": [
+            "game/csgo/addons/BotVision"
+          ],
+          "keep": [
+            "config.json"
           ]
         }
       ]

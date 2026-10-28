@@ -3,7 +3,9 @@ using CounterStrikeSharp.API.Core;
 using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using CounterStrikeSharp.API.Modules.Cvars;
+using CounterStrikeSharp.API.Core.Attributes.Registration;
+using CounterStrikeSharp.API.Modules.Admin;
+using CounterStrikeSharp.API.Modules.Commands;
 using CounterStrikeSharp.API.Modules.Timers;
 using CounterStrikeSharp.API.Modules.Utils;
 
@@ -28,13 +30,14 @@ namespace CourseFix;
 //    als RespawnPos in cfg/SharpTimer/MapData/<map>.json ein. SharpTimer liest die
 //    Datei bei jedem Rundenstart, danach funktioniert sein eigenes !r.
 // 4. Runterfallen ohne zu sterben: Viele Gruben sind nicht tief genug für tödlichen
-//    Fallschaden, man steht dann unten fest. -> Wer tiefer fällt als
-//    coursefix_fall_height (Standard 400 Einheiten), kommt automatisch zum letzten
-//    Checkpoint (!tp) zurück, ohne Checkpoint zum Start (!r). 0 schaltet das ab.
+//    Fallschaden, man steht dann unten fest. -> Pro Map lässt sich eine Grubenhöhe
+//    festlegen (Admin: in die Grube stellen, !setpit). Wer darunter fällt, kommt
+//    automatisch zum letzten Checkpoint (!tp), ohne Checkpoint zum Start (!r).
+//    Gespeichert in cfg/CourseFix/pits.json. !setpit off löscht sie, !pit zeigt sie.
 public class CourseFix : BasePlugin
 {
     public override string ModuleName => "CourseFix";
-    public override string ModuleVersion => "1.4.0";
+    public override string ModuleVersion => "1.5.0";
     public override string ModuleAuthor => "shakanuga";
     public override string ModuleDescription => "Extra spawn points and no death zones at spawn for course maps";
 
@@ -50,11 +53,9 @@ public class CourseFix : BasePlugin
     private readonly Dictionary<int, float> _spawnTime = new();
     private bool _spawnDeathSeen = false;
 
-    public FakeConVar<float> FallHeight = new("coursefix_fall_height",
-        "Fallhöhe in Einheiten, ab der Spieler automatisch zum Checkpoint/Start zurückkommen (0 = aus)", 400f);
-
-    // Letzte Bodenhöhe je Spieler und ob für den aktuellen Sturz schon reagiert wurde.
-    private readonly Dictionary<int, float> _groundZ = new();
+    // Grubenhöhe (Z) je Map aus cfg/CourseFix/pits.json, und wer gerade zurückgesetzt wird.
+    private Dictionary<string, float> _pits = new();
+    private float? _pitZ;
     private readonly HashSet<int> _rescued = new();
 
     private static readonly string[] StartTriggerNames = { "map_start", "s1_start", "stage1_start", "timer_startzone", "zone_start" };
@@ -67,8 +68,8 @@ public class CourseFix : BasePlugin
             _reported.Clear();
             _spawnTime.Clear();
             _spawnDeathSeen = false;
-            _groundZ.Clear();
             _rescued.Clear();
+            LoadPits();
             AddTimer(2.0f, Setup, TimerFlags.STOP_ON_MAPCHANGE);
         });
 
@@ -83,7 +84,6 @@ public class CourseFix : BasePlugin
             if (e.Userid is { IsValid: true } p)
             {
                 _spawnTime[p.Slot] = Server.CurrentTime;
-                _groundZ.Remove(p.Slot);
                 _rescued.Remove(p.Slot);
             }
             return HookResult.Continue;
@@ -108,6 +108,7 @@ public class CourseFix : BasePlugin
 
         AddTimer(1.0f, DisableSpawnHurts, TimerFlags.REPEAT);
         RegisterListener<Listeners.OnTick>(CheckFalls);
+        LoadPits();
 
         // Auch beim ersten Laden mitten auf der Map sofort greifen.
         AddTimer(1.0f, Setup);
@@ -256,15 +257,100 @@ public class CourseFix : BasePlugin
         }
     }
 
+    private static string PitsPath() =>
+        Path.Join(Server.GameDirectory, "csgo", "cfg", "CourseFix", "pits.json");
+
+    // pits.json gehört dem Server (per !setpit geschrieben) und liegt nicht im Repo,
+    // damit ein Update sie nicht überschreibt. Feste Werte aus dem Repo kommen aus
+    // pits.default.json; Einträge in pits.json haben Vorrang.
+    private Dictionary<string, float> ReadPits(string path) => File.Exists(path)
+        ? JsonSerializer.Deserialize<Dictionary<string, float>>(File.ReadAllText(path)) ?? new()
+        : new();
+
+    private void LoadPits()
+    {
+        var merged = new Dictionary<string, float>();
+        _pits = new();
+        foreach (var (path, own) in new[] { (Path.ChangeExtension(PitsPath(), ".default.json"), false), (PitsPath(), true) })
+        {
+            try
+            {
+                foreach (var kv in ReadPits(path))
+                {
+                    merged[kv.Key] = kv.Value;
+                    if (own) _pits[kv.Key] = kv.Value;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log($"{Path.GetFileName(path)} nicht lesbar: {ex.Message}");
+            }
+        }
+        _pitZ = merged.TryGetValue(Server.MapName, out var z) ? z : null;
+        if (_pitZ != null)
+            Log($"Grubenhöhe für {Server.MapName}: {_pitZ:0}");
+    }
+
+    private void SavePits()
+    {
+        var path = PitsPath();
+        Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+        var sorted = new SortedDictionary<string, float>(_pits);
+        File.WriteAllText(path, JsonSerializer.Serialize(sorted, new JsonSerializerOptions { WriteIndented = true }));
+    }
+
+    [ConsoleCommand("css_setpit", "Grubenhöhe für diese Map setzen: in die Grube stellen und !setpit, '!setpit off' löscht sie")]
+    [RequiresPermissions("@css/rcon")]
+    [CommandHelper(whoCanExecute: CommandUsage.CLIENT_ONLY)]
+    public void OnSetPit(CCSPlayerController? player, CommandInfo info)
+    {
+        if (player == null || !player.IsValid)
+            return;
+
+        if (info.ArgCount > 1 && info.GetArg(1).Equals("off", StringComparison.OrdinalIgnoreCase))
+        {
+            _pits.Remove(Server.MapName);
+            _pitZ = null;
+            SavePits();
+            info.ReplyToCommand($" {ChatColors.Green}[CourseFix]{ChatColors.Default} Grubenhöhe für {Server.MapName} gelöscht.");
+            return;
+        }
+
+        var pos = player.PlayerPawn.Value?.AbsOrigin;
+        if (pos == null || !player.PawnIsAlive)
+        {
+            info.ReplyToCommand($" {ChatColors.Green}[CourseFix]{ChatColors.Default} Nur lebend möglich.");
+            return;
+        }
+
+        // Etwas über den Füßen, damit man beim Aufkommen sicher darunter ist.
+        float z = MathF.Round(pos.Z + 32);
+        _pits[Server.MapName] = z;
+        _pitZ = z;
+        SavePits();
+        info.ReplyToCommand($" {ChatColors.Green}[CourseFix]{ChatColors.Default} Grubenhöhe für {Server.MapName} auf {z:0} gesetzt. Wer darunter fällt, kommt zum Checkpoint/Start zurück.");
+        Log($"Grubenhöhe für {Server.MapName} auf {z:0} gesetzt von {player.PlayerName}");
+    }
+
+    [ConsoleCommand("css_pit", "Zeigt die Grubenhöhe dieser Map und deine aktuelle Höhe")]
+    [CommandHelper(whoCanExecute: CommandUsage.CLIENT_ONLY)]
+    public void OnPit(CCSPlayerController? player, CommandInfo info)
+    {
+        var pos = player?.PlayerPawn.Value?.AbsOrigin;
+        string mine = pos == null ? "-" : $"{pos.Z:0}";
+        string pit = _pitZ == null ? "nicht gesetzt" : $"{_pitZ:0}";
+        info.ReplyToCommand($" {ChatColors.Green}[CourseFix]{ChatColors.Default} Grubenhöhe {Server.MapName}: {pit}, deine Höhe: {mine}");
+    }
+
     private void CheckFalls()
     {
-        float limit = FallHeight.Value;
-        if (limit <= 0)
+        if (_pitZ == null)
             return;
+        float pitZ = _pitZ.Value;
 
         foreach (var player in Utilities.GetPlayers())
         {
-            if (!player.IsValid || player.IsBot || !player.PawnIsAlive)
+            if (!player.IsValid || player.IsBot || !player.PawnIsAlive || _rescued.Contains(player.Slot))
                 continue;
             var pawn = player.PlayerPawn.Value;
             var pos = pawn?.AbsOrigin;
@@ -272,29 +358,12 @@ public class CourseFix : BasePlugin
                 continue;
 
             var move = pawn.MoveType.ToString();
-            if (move.Contains("NOCLIP") || move.Contains("LADDER") || move.Contains("OBSERVER"))
-            {
-                _groundZ.Remove(player.Slot);
-                continue;
-            }
-
-            bool onGround = (pawn.Flags & 1) != 0; // FL_ONGROUND
-            int slot = player.Slot;
-
-            if (onGround)
-            {
-                // Auf dem Boden nur hochzählen, wenn nicht gerade tief unten gelandet.
-                if (!_rescued.Contains(slot))
-                    _groundZ[slot] = pos.Z;
-                continue;
-            }
-
-            if (!_groundZ.TryGetValue(slot, out var lastGround) || _rescued.Contains(slot))
+            if (move.Contains("NOCLIP") || move.Contains("OBSERVER"))
                 continue;
 
-            if (lastGround - pos.Z > limit)
+            if (pos.Z < pitZ)
             {
-                _rescued.Add(slot);
+                _rescued.Add(player.Slot);
                 Rescue(player);
             }
         }
@@ -321,12 +390,8 @@ public class CourseFix : BasePlugin
             if (!moved)
                 player.ExecuteClientCommandFromServer("css_r");
 
-            // Neue Bodenhöhe nach dem Teleport gilt wieder als Ausgangspunkt.
-            AddTimer(0.5f, () =>
-            {
-                _groundZ.Remove(slot);
-                _rescued.Remove(slot);
-            });
+            // Kurz warten, bis der Teleport sicher durch ist.
+            AddTimer(0.5f, () => _rescued.Remove(slot));
         });
     }
 

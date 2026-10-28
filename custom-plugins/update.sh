@@ -55,7 +55,9 @@ for ((i = 0; i < count; i++)); do
     archives=()
     ndirs=$(jq '.dirs | length' <<<"$p")
     for ((d = 0; d < ndirs; d++)); do
-        archive=$(jq -r ".dirs[$d].archive" <<<"$p")
+        # "marker": Ordner im Archiv über eine Datei darin finden (z. B. die Plugin-DLL),
+        # für Releases, deren Ordnername im ZIP wechselt. Sonst über "archive" (Pfadende).
+        archive=$(jq -r ".dirs[$d] | if .marker then \"marker:\" + .marker else .archive end" <<<"$p")
         target=""
         while IFS= read -r cand; do
             if [ -d "$cand" ]; then target="$cand"; break; fi
@@ -78,6 +80,9 @@ for ((i = 0; i < count; i++)); do
     fi
     tag=$(jq -r .tag_name <<<"$release")
     latest=${tag#[vV]}
+    # Tags ohne Ziffern (z. B. "release", immer wieder neu vergeben): Datum mitnehmen,
+    # damit eine neue Release trotzdem erkannt wird.
+    case "$latest" in *[0-9]*) ;; *) latest="$latest@$(jq -r .published_at <<<"$release")" ;; esac
 
     if [ "$latest" = "$current" ]; then
         echo "aktuell ($current)"
@@ -88,9 +93,11 @@ for ((i = 0; i < count; i++)); do
 
     asset=$(jq -r .asset <<<"$p")
     asset=${asset//\{version\}/$latest}
-    url=$(jq -r --arg a "$asset" '[.assets[] | select(.name == $a)] | if length == 1 then .[0].url else empty end' <<<"$release")
+    # "*" im Dateinamen ist ein Platzhalter; es muss genau eine Datei passen.
+    re=$(printf '%s' "$asset" | sed -e 's/[.[\^$+?(){}|]/\\&/g' -e 's/\*/.*/g')
+    url=$(jq -r --arg re "^${re}$" '[.assets[] | select(.name | test($re))] | if length == 1 then .[0].url else empty end' <<<"$release")
     if [ -z "$url" ]; then
-        echo "FEHLER: Release $tag hat keine Datei '$asset'. Vorhanden:" >&2
+        echo "FEHLER: in Release $tag passt nicht genau eine Datei auf '$asset'. Vorhanden:" >&2
         jq -r '.assets[].name' <<<"$release" | sed 's/^/  /' >&2
         failed+=("$name"); summary+=("!!  $name: Datei $asset fehlt in $tag")
         continue
@@ -116,7 +123,10 @@ for ((i = 0; i < count; i++)); do
     for ((k = 0; k < ${#targets[@]}; k++)); do
         archive=${archives[$k]}
         target=${targets[$k]}
-        mapfile -t found < <(find "$dir/x" -type d -path "*/$archive")
+        case "$archive" in
+            marker:*) mapfile -t found < <(find "$dir/x" -type f -name "${archive#marker:}" -exec dirname {} \;) ;;
+            *)        mapfile -t found < <(find "$dir/x" -type d -path "*/$archive") ;;
+        esac
         if [ ${#found[@]} -ne 1 ]; then
             echo "FEHLER: '$archive' kommt ${#found[@]}x im Archiv vor (erwartet 1). Hat sich der Aufbau geändert?" >&2
             ok=0; break

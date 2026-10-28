@@ -18,12 +18,12 @@
     },
     {
       "name": "Warcraft",
-      "repo": "Wngui/CS2WarcraftMod",
-      "asset": "warcraft-plugin-{version}.zip",
+      "repo": "NightFuryPrime/CS2-Warcraft-Plugin",
+      "asset": "*.zip",
       "version": "3.3.5",
       "dirs": [
         {
-          "archive": "WarcraftPlugin",
+          "marker": "WarcraftPlugin.dll",
           "repo": [
             "game/csgo/addons/counterstrikesharp/plugins/WarcraftPlugin",
             "game/csgo/addons/counterstrikesharp/plugins/disabled/WarcraftPlugin"

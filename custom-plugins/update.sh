@@ -91,6 +91,15 @@ for ((i = 0; i < count; i++)); do
         summary+=("OK  $name $current")
         continue
     fi
+    # Nie auf eine ältere Version zurückgehen (z. B. wenn im Repo schon eine
+    # neuere liegt als die neueste Release). Nur bei echten Versionsnummern.
+    case "$latest$current" in *@*) ;; *)
+        if [ -n "$current" ] && [ "$(printf '%s\n%s\n' "$current" "$latest" | sort -V | tail -1)" = "$current" ]; then
+            echo "im Repo ist $current, neueste Release ist $latest - kein Downgrade"
+            summary+=("OK  $name $current (Release $latest ist älter)")
+            continue
+        fi ;;
+    esac
     echo "Update: ${current:-unbekannt} > $latest"
 
     asset=$(jq -r .asset <<<"$p")

@@ -3,6 +3,7 @@ using CounterStrikeSharp.API.Core;
 using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using CounterStrikeSharp.API.Modules.Cvars;
 using CounterStrikeSharp.API.Modules.Timers;
 using CounterStrikeSharp.API.Modules.Utils;
 
@@ -26,10 +27,14 @@ namespace CourseFix;
 //    nicht haben ("No RespawnPos found"). -> CourseFix trägt den ersten CT-Spawn
 //    als RespawnPos in cfg/SharpTimer/MapData/<map>.json ein. SharpTimer liest die
 //    Datei bei jedem Rundenstart, danach funktioniert sein eigenes !r.
+// 4. Runterfallen ohne zu sterben: Viele Gruben sind nicht tief genug für tödlichen
+//    Fallschaden, man steht dann unten fest. -> Wer tiefer fällt als
+//    coursefix_fall_height (Standard 400 Einheiten), kommt automatisch zum letzten
+//    Checkpoint (!tp) zurück, ohne Checkpoint zum Start (!r). 0 schaltet das ab.
 public class CourseFix : BasePlugin
 {
     public override string ModuleName => "CourseFix";
-    public override string ModuleVersion => "1.3.0";
+    public override string ModuleVersion => "1.4.0";
     public override string ModuleAuthor => "shakanuga";
     public override string ModuleDescription => "Extra spawn points and no death zones at spawn for course maps";
 
@@ -45,6 +50,13 @@ public class CourseFix : BasePlugin
     private readonly Dictionary<int, float> _spawnTime = new();
     private bool _spawnDeathSeen = false;
 
+    public FakeConVar<float> FallHeight = new("coursefix_fall_height",
+        "Fallhöhe in Einheiten, ab der Spieler automatisch zum Checkpoint/Start zurückkommen (0 = aus)", 400f);
+
+    // Letzte Bodenhöhe je Spieler und ob für den aktuellen Sturz schon reagiert wurde.
+    private readonly Dictionary<int, float> _groundZ = new();
+    private readonly HashSet<int> _rescued = new();
+
     private static readonly string[] StartTriggerNames = { "map_start", "s1_start", "stage1_start", "timer_startzone", "zone_start" };
 
     public override void Load(bool hotReload)
@@ -55,6 +67,8 @@ public class CourseFix : BasePlugin
             _reported.Clear();
             _spawnTime.Clear();
             _spawnDeathSeen = false;
+            _groundZ.Clear();
+            _rescued.Clear();
             AddTimer(2.0f, Setup, TimerFlags.STOP_ON_MAPCHANGE);
         });
 
@@ -67,7 +81,11 @@ public class CourseFix : BasePlugin
         RegisterEventHandler<EventPlayerSpawn>((e, _) =>
         {
             if (e.Userid is { IsValid: true } p)
+            {
                 _spawnTime[p.Slot] = Server.CurrentTime;
+                _groundZ.Remove(p.Slot);
+                _rescued.Remove(p.Slot);
+            }
             return HookResult.Continue;
         });
 
@@ -89,6 +107,7 @@ public class CourseFix : BasePlugin
         });
 
         AddTimer(1.0f, DisableSpawnHurts, TimerFlags.REPEAT);
+        RegisterListener<Listeners.OnTick>(CheckFalls);
 
         // Auch beim ersten Laden mitten auf der Map sofort greifen.
         AddTimer(1.0f, Setup);
@@ -235,6 +254,80 @@ public class CourseFix : BasePlugin
         {
             Log($"Konnte RespawnPos nicht schreiben: {ex.Message}");
         }
+    }
+
+    private void CheckFalls()
+    {
+        float limit = FallHeight.Value;
+        if (limit <= 0)
+            return;
+
+        foreach (var player in Utilities.GetPlayers())
+        {
+            if (!player.IsValid || player.IsBot || !player.PawnIsAlive)
+                continue;
+            var pawn = player.PlayerPawn.Value;
+            var pos = pawn?.AbsOrigin;
+            if (pawn == null || pos == null)
+                continue;
+
+            var move = pawn.MoveType.ToString();
+            if (move.Contains("NOCLIP") || move.Contains("LADDER") || move.Contains("OBSERVER"))
+            {
+                _groundZ.Remove(player.Slot);
+                continue;
+            }
+
+            bool onGround = (pawn.Flags & 1) != 0; // FL_ONGROUND
+            int slot = player.Slot;
+
+            if (onGround)
+            {
+                // Auf dem Boden nur hochzählen, wenn nicht gerade tief unten gelandet.
+                if (!_rescued.Contains(slot))
+                    _groundZ[slot] = pos.Z;
+                continue;
+            }
+
+            if (!_groundZ.TryGetValue(slot, out var lastGround) || _rescued.Contains(slot))
+                continue;
+
+            if (lastGround - pos.Z > limit)
+            {
+                _rescued.Add(slot);
+                Rescue(player);
+            }
+        }
+    }
+
+    // Zum letzten Checkpoint (SharpTimer !tp), sonst zum Start (!r).
+    private void Rescue(CCSPlayerController player)
+    {
+        var start = player.PlayerPawn.Value?.AbsOrigin;
+        var before = start == null ? (0f, 0f, 0f) : (start.X, start.Y, start.Z);
+        player.ExecuteClientCommandFromServer("css_tp");
+
+        AddTimer(0.3f, () =>
+        {
+            int slot = player.Slot;
+            if (!player.IsValid || !player.PawnIsAlive)
+            {
+                _rescued.Remove(slot);
+                return;
+            }
+            var now = player.PlayerPawn.Value?.AbsOrigin;
+            bool moved = now != null && Math.Abs(now.Z - before.Item3) > 100 ||
+                         now != null && (Math.Abs(now.X - before.Item1) > 100 || Math.Abs(now.Y - before.Item2) > 100);
+            if (!moved)
+                player.ExecuteClientCommandFromServer("css_r");
+
+            // Neue Bodenhöhe nach dem Teleport gilt wieder als Ausgangspunkt.
+            AddTimer(0.5f, () =>
+            {
+                _groundZ.Remove(slot);
+                _rescued.Remove(slot);
+            });
+        });
     }
 
     private void Log(string msg) => Server.PrintToConsole($"[CourseFix] {msg}");

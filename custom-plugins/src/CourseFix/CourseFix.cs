@@ -15,11 +15,14 @@ namespace CourseFix;
 // 2. Todeszone am Start: Viele dieser Maps schalten nach einer festen Zeit eine
 //    Schadenszone (trigger_hurt) am Spawn scharf, damit die Runde endet. Mit
 //    Respawn im Course-Modus stirbt man dann in Dauerschleife.
-//    -> Schadenszonen, die einen Spawnpunkt berühren, werden laufend abgeschaltet.
+//    -> Erst wenn jemand kurz nach dem Spawn durch die Map stirbt, werden
+//       Schadenszonen, die einen Spawnpunkt berühren, bis zum Mapwechsel
+//       abgeschaltet. Vorher bleiben sie aktiv, damit z. B. eine große
+//       Todeszone unter der Map normal funktioniert.
 public class CourseFix : BasePlugin
 {
     public override string ModuleName => "CourseFix";
-    public override string ModuleVersion => "1.0.0";
+    public override string ModuleVersion => "1.1.0";
     public override string ModuleAuthor => "shakanuga";
     public override string ModuleDescription => "Extra spawn points and no death zones at spawn for course maps";
 
@@ -30,18 +33,49 @@ public class CourseFix : BasePlugin
     private readonly List<(float X, float Y, float Z)> _spawns = new();
     private readonly HashSet<uint> _reported = new();
 
+    // Sekunden nach dem Spawn, in denen ein Tod durch die Map als Spawn-Tod zählt.
+    private const float SpawnDeathWindow = 4.0f;
+    private readonly Dictionary<int, float> _spawnTime = new();
+    private bool _spawnDeathSeen = false;
+
     public override void Load(bool hotReload)
     {
         RegisterListener<Listeners.OnMapStart>(_ =>
         {
             _spawns.Clear();
             _reported.Clear();
+            _spawnTime.Clear();
+            _spawnDeathSeen = false;
             AddTimer(2.0f, Setup, TimerFlags.STOP_ON_MAPCHANGE);
         });
 
         RegisterEventHandler<EventRoundStart>((_, _) =>
         {
             AddTimer(0.5f, Setup, TimerFlags.STOP_ON_MAPCHANGE);
+            return HookResult.Continue;
+        });
+
+        RegisterEventHandler<EventPlayerSpawn>((e, _) =>
+        {
+            if (e.Userid is { IsValid: true } p)
+                _spawnTime[p.Slot] = Server.CurrentTime;
+            return HookResult.Continue;
+        });
+
+        RegisterEventHandler<EventPlayerDeath>((e, _) =>
+        {
+            var victim = e.Userid;
+            if (victim == null || !victim.IsValid || _spawnDeathSeen)
+                return HookResult.Continue;
+
+            // Tod durch die Map (kein Spieler als Angreifer) kurz nach dem Spawn.
+            bool byWorld = e.Attacker == null || !e.Attacker.IsValid || e.Attacker == victim;
+            if (byWorld && _spawnTime.TryGetValue(victim.Slot, out var t) && Server.CurrentTime - t < SpawnDeathWindow)
+            {
+                _spawnDeathSeen = true;
+                Log($"{victim.PlayerName} ist {Server.CurrentTime - t:0.0}s nach dem Spawn gestorben - Schadenszonen am Spawn werden ab jetzt abgeschaltet.");
+                DisableSpawnHurts();
+            }
             return HookResult.Continue;
         });
 
@@ -100,7 +134,7 @@ public class CourseFix : BasePlugin
 
     private void DisableSpawnHurts()
     {
-        if (_spawns.Count == 0)
+        if (_spawns.Count == 0 || !_spawnDeathSeen)
             return;
 
         foreach (var hurt in Utilities.FindAllEntitiesByDesignerName<CTriggerHurt>("trigger_hurt"))

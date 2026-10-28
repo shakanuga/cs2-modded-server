@@ -1,0 +1,109 @@
+{
+  "_info": "Eigene Plugins, die der kus-Updater nicht kennt. Wird von custom-plugins/update.sh gelesen. 'version' ist die im Repo liegende Version und wird vom Skript nach jedem Update hochgesetzt. Ein Ordner wird nur aktualisiert, wenn er im Repo schon existiert (nie neu installiert).",
+  "plugins": [
+    {
+      "name": "Hide and Seek",
+      "repo": "shakanuga/CS2-HideAndSeekPlugin",
+      "asset": "HideAndSeekPlugin.zip",
+      "version": "1.1.1",
+      "dirs": [
+        {
+          "archive": "HideAndSeekPlugin",
+          "repo": [
+            "game/csgo/addons/counterstrikesharp/plugins/HideAndSeekPlugin",
+            "game/csgo/addons/counterstrikesharp/plugins/disabled/HideAndSeekPlugin"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Warcraft",
+      "repo": "Wngui/CS2WarcraftMod",
+      "asset": "warcraft-plugin-{version}.zip",
+      "version": "3.3.5",
+      "dirs": [
+        {
+          "archive": "WarcraftPlugin",
+          "repo": [
+            "game/csgo/addons/counterstrikesharp/plugins/WarcraftPlugin",
+            "game/csgo/addons/counterstrikesharp/plugins/disabled/WarcraftPlugin"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "CS2 Bot Improver",
+      "repo": "ed0ard/CS2-Bot-Improver",
+      "asset": "CS2BotImprover_for_Linux.zip",
+      "version": "",
+      "dirs": [
+        {
+          "archive": "counterstrikesharp/plugins/BotAI",
+          "repo": [
+            "game/csgo/addons/counterstrikesharp/plugins/BotAI",
+            "game/csgo/addons/counterstrikesharp/plugins/disabled/BotAI"
+          ]
+        },
+        {
+          "archive": "counterstrikesharp/plugins/BotAimImprover",
+          "repo": [
+            "game/csgo/addons/counterstrikesharp/plugins/BotAimImprover",
+            "game/csgo/addons/counterstrikesharp/plugins/disabled/BotAimImprover"
+          ]
+        },
+        {
+          "archive": "counterstrikesharp/plugins/BotBuy",
+          "repo": [
+            "game/csgo/addons/counterstrikesharp/plugins/BotBuy",
+            "game/csgo/addons/counterstrikesharp/plugins/disabled/BotBuy"
+          ]
+        },
+        {
+          "archive": "counterstrikesharp/plugins/BotState",
+          "repo": [
+            "game/csgo/addons/counterstrikesharp/plugins/BotState",
+            "game/csgo/addons/counterstrikesharp/plugins/disabled/BotState"
+          ]
+        },
+        {
+          "archive": "counterstrikesharp/plugins/BotRandomizer",
+          "repo": [
+            "game/csgo/addons/counterstrikesharp/plugins/BotRandomizer",
+            "game/csgo/addons/counterstrikesharp/plugins/disabled/BotRandomizer"
+          ]
+        },
+        {
+          "archive": "counterstrikesharp/plugins/NadeSystem",
+          "repo": [
+            "game/csgo/addons/counterstrikesharp/plugins/NadeSystem",
+            "game/csgo/addons/counterstrikesharp/plugins/disabled/NadeSystem"
+          ]
+        },
+        {
+          "archive": "counterstrikesharp/data/NadeSystem",
+          "repo": [
+            "game/csgo/addons/counterstrikesharp/data/NadeSystem"
+          ]
+        },
+        {
+          "archive": "addons/BotVision",
+          "repo": [
+            "game/csgo/addons/BotVision"
+          ]
+        },
+        {
+          "archive": "addons/BotHider",
+          "repo": [
+            "game/csgo/addons/BotHider"
+          ]
+        },
+        {
+          "archive": "addons/BotController",
+          "repo": [
+            "game/csgo/addons/BotController"
+          ]
+        }
+      ]
+    }
+  ]
+}

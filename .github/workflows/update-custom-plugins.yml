@@ -1,0 +1,80 @@
+name: update custom plugins
+
+# Aktualisiert die eigenen Plugins (Hide and Seek, Warcraft, Bot Improver) aus
+# custom-plugins/plugins.json direkt auf master, ohne Pull Request, und baut danach
+# das Docker-Image neu. Getrennt vom kus-Workflow "auto update mods", damit
+# "Sync fork" keine Konflikte in kus' Dateien bekommt.
+
+on:
+  schedule:
+    # täglich 05:17 UTC (06:17 / 07:17 deutscher Zeit)
+    - cron: '17 5 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Nur prüfen, nichts ändern'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: update-custom-plugins
+  cancel-in-progress: false
+
+jobs:
+  update:
+    name: Update custom plugins
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 1
+
+      - name: Git-Identität
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Updater ausführen
+        id: update
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -uo pipefail
+          echo "before=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          args=()
+          [ "${{ inputs.dry_run }}" = "true" ] && args+=(--dry-run)
+          set +e
+          bash custom-plugins/update.sh "${args[@]}" 2>&1 | tee /tmp/update.log
+          rc=${PIPESTATUS[0]}
+          set -e
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          echo "after=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          {
+            echo '### Custom plugin update'
+            echo '```'
+            sed -n '/^=\{10,\} summary/,$p' /tmp/update.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Auf master pushen
+        if: steps.update.outputs.before != steps.update.outputs.after
+        run: git push origin HEAD:master
+
+      # Pushes mit dem Actions-Token lösen keine anderen Workflows aus, ein
+      # workflow_dispatch schon. Deshalb wird "build and publish" hier direkt gestartet.
+      - name: Docker-Image neu bauen
+        if: steps.update.outputs.before != steps.update.outputs.after
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run docker-image.yml --ref master
+
+      - name: Fehlschlag melden
+        if: steps.update.outputs.rc != '0'
+        run: |
+          echo "Mindestens ein Plugin konnte nicht aktualisiert werden, siehe Zusammenfassung."
+          exit 1

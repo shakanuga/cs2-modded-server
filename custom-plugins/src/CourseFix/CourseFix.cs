@@ -1,7 +1,8 @@
 using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
-using CounterStrikeSharp.API.Modules.Commands;
+using System.Globalization;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using CounterStrikeSharp.API.Modules.Timers;
 using CounterStrikeSharp.API.Modules.Utils;
 
@@ -22,12 +23,13 @@ namespace CourseFix;
 //       abgeschaltet. Vorher bleiben sie aktiv, damit z. B. eine große
 //       Todeszone unter der Map normal funktioniert.
 // 3. !r ohne Startzone: SharpTimer braucht für !r eine Startzone, die diese Maps
-//    nicht haben ("No RespawnPos found"). -> Dann bringt !r dich an einen
-//    Spawnpunkt deines Teams zurück.
+//    nicht haben ("No RespawnPos found"). -> CourseFix trägt den ersten CT-Spawn
+//    als RespawnPos in cfg/SharpTimer/MapData/<map>.json ein. SharpTimer liest die
+//    Datei bei jedem Rundenstart, danach funktioniert sein eigenes !r.
 public class CourseFix : BasePlugin
 {
     public override string ModuleName => "CourseFix";
-    public override string ModuleVersion => "1.2.0";
+    public override string ModuleVersion => "1.3.0";
     public override string ModuleAuthor => "shakanuga";
     public override string ModuleDescription => "Extra spawn points and no death zones at spawn for course maps";
 
@@ -43,12 +45,7 @@ public class CourseFix : BasePlugin
     private readonly Dictionary<int, float> _spawnTime = new();
     private bool _spawnDeathSeen = false;
 
-    // Spawnpunkte je Team mit Blickrichtung, für !r.
-    private readonly Dictionary<CsTeam, List<(float X, float Y, float Z, float Yaw)>> _teamSpawns = new();
-    private bool _hasStartZone = true;
     private static readonly string[] StartTriggerNames = { "map_start", "s1_start", "stage1_start", "timer_startzone", "zone_start" };
-    private static readonly string[] RespawnChat = { "!r", "/r", ".r", "!restart", "/restart" };
-    private readonly Random _random = new();
 
     public override void Load(bool hotReload)
     {
@@ -93,11 +90,6 @@ public class CourseFix : BasePlugin
 
         AddTimer(1.0f, DisableSpawnHurts, TimerFlags.REPEAT);
 
-        // !r abfangen, bevor SharpTimer "No RespawnPos found" meldet.
-        AddCommandListener("css_r", (player, _) => TeleportToStart(player) ? HookResult.Handled : HookResult.Continue, HookMode.Pre);
-        AddCommandListener("say", OnSay, HookMode.Pre);
-        AddCommandListener("say_team", OnSay, HookMode.Pre);
-
         // Auch beim ersten Laden mitten auf der Map sofort greifen.
         AddTimer(1.0f, Setup);
     }
@@ -114,14 +106,13 @@ public class CourseFix : BasePlugin
         foreach (var s in byTeam.Values.SelectMany(l => l))
             _spawns.Add((s.AbsOrigin!.X, s.AbsOrigin.Y, s.AbsOrigin.Z));
 
-        _teamSpawns.Clear();
-        _teamSpawns[CsTeam.CounterTerrorist] = byTeam["info_player_counterterrorist"].Select(ToSpawn).ToList();
-        _teamSpawns[CsTeam.Terrorist] = byTeam["info_player_terrorist"].Select(ToSpawn).ToList();
-
-        bool hadStart = _hasStartZone;
-        _hasStartZone = MapHasStartZone();
-        if (!_hasStartZone && hadStart)
-            Log("Keine SharpTimer-Startzone auf dieser Map - !r bringt Spieler zum Spawn zurück.");
+        if (!MapHasStartZone())
+        {
+            var first = byTeam["info_player_counterterrorist"].FirstOrDefault()
+                        ?? byTeam["info_player_terrorist"].FirstOrDefault();
+            if (first != null)
+                WriteRespawnPos(first.AbsOrigin!.X, first.AbsOrigin.Y, first.AbsOrigin.Z);
+        }
 
         if (_spawns.Count == 0)
         {
@@ -189,8 +180,8 @@ public class CourseFix : BasePlugin
         }
     }
 
-    private static (float X, float Y, float Z, float Yaw) ToSpawn(SpawnPoint s) =>
-        (s.AbsOrigin!.X, s.AbsOrigin.Y, s.AbsOrigin.Z, s.AbsRotation?.Y ?? 0);
+    private static string MapDataPath() =>
+        Path.Join(Server.GameDirectory, "csgo", "cfg", "SharpTimer", "MapData", $"{Server.MapName}.json");
 
     // Hat SharpTimer für diese Map eine Startposition? Entweder über einen
     // Start-Trigger in der Map oder über RespawnPos in cfg/SharpTimer/MapData/<map>.json.
@@ -205,51 +196,45 @@ public class CourseFix : BasePlugin
 
         try
         {
-            var path = Path.Join(Server.GameDirectory, "csgo", "cfg", "SharpTimer", "MapData", $"{Server.MapName}.json");
+            var path = MapDataPath();
             if (File.Exists(path))
             {
                 using var doc = JsonDocument.Parse(File.ReadAllText(path));
-                if (doc.RootElement.TryGetProperty("RespawnPos", out var pos) && !string.IsNullOrWhiteSpace(pos.GetString()))
+                if (doc.RootElement.TryGetProperty("RespawnPos", out var pos) &&
+                    pos.ValueKind == JsonValueKind.String && !string.IsNullOrWhiteSpace(pos.GetString()))
                     return true;
             }
         }
         catch
         {
-            // Kaputte JSON: so tun, als gäbe es keine Startposition.
+            // Kaputte JSON: wird unten neu geschrieben.
         }
         return false;
     }
 
-    private HookResult OnSay(CCSPlayerController? player, CommandInfo info)
+    // RespawnPos in die MapData-Datei von SharpTimer schreiben, vorhandene Felder bleiben.
+    private void WriteRespawnPos(float x, float y, float z)
     {
-        var msg = info.GetArg(1).Trim();
-        if (RespawnChat.Contains(msg, StringComparer.OrdinalIgnoreCase) && TeleportToStart(player))
-            return HookResult.Handled;
-        return HookResult.Continue;
-    }
-
-    // true = erledigt (SharpTimer soll nicht mehr ran), false = SharpTimer macht es selbst.
-    private bool TeleportToStart(CCSPlayerController? player)
-    {
-        if (_hasStartZone || player == null || !player.IsValid || player.IsBot)
-            return false;
-
-        if (!player.PawnIsAlive)
+        try
         {
-            player.Respawn();
-            return true;
+            var path = MapDataPath();
+            JsonObject obj = new();
+            if (File.Exists(path))
+            {
+                try { obj = JsonNode.Parse(File.ReadAllText(path)) as JsonObject ?? new(); }
+                catch { obj = new(); }
+            }
+
+            // Etwas über dem Boden, damit man nicht im Boden steckt.
+            obj["RespawnPos"] = string.Create(CultureInfo.InvariantCulture, $"{x:0.###} {y:0.###} {z + 8:0.###}");
+            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+            File.WriteAllText(path, obj.ToJsonString(new JsonSerializerOptions { WriteIndented = true }));
+            Log($"RespawnPos für {Server.MapName} angelegt ({obj["RespawnPos"]}) - !r funktioniert ab dem nächsten Rundenstart.");
         }
-
-        if (!_teamSpawns.TryGetValue(player.Team, out var list) || list.Count == 0)
-            list = _teamSpawns.Values.SelectMany(l => l).ToList();
-        var pawn = player.PlayerPawn.Value;
-        if (list.Count == 0 || pawn == null)
-            return false;
-
-        var sp = list[_random.Next(list.Count)];
-        pawn.Teleport(new Vector(sp.X, sp.Y, sp.Z), new QAngle(0, sp.Yaw, 0), new Vector(0, 0, 0));
-        player.PrintToChat($" {ChatColors.Green}[CourseFix]{ChatColors.Default} Zurück zum Start.");
-        return true;
+        catch (Exception ex)
+        {
+            Log($"Konnte RespawnPos nicht schreiben: {ex.Message}");
+        }
     }
 
     private void Log(string msg) => Server.PrintToConsole($"[CourseFix] {msg}");

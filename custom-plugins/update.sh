@@ -61,7 +61,7 @@ for ((i = 0; i < count; i++)); do
         archive=$(jq -r ".dirs[$d] | if .marker then \"marker:\" + .marker else .archive end" <<<"$p")
         target=""
         while IFS= read -r cand; do
-            if [ -d "$cand" ]; then target="$cand"; break; fi
+            if [ -d "$cand" ] || [ -f "$cand" ]; then target="$cand"; break; fi
         done < <(jq -r ".dirs[$d].repo[]" <<<"$p")
         if [ -n "$target" ]; then
             targets+=("$target")
@@ -136,13 +136,25 @@ for ((i = 0; i < count; i++)); do
         target=${targets[$k]}
         case "$archive" in
             marker:*) mapfile -t found < <(find "$dir/x" -type f -name "${archive#marker:}" -exec dirname {} \;) ;;
-            *)        mapfile -t found < <(find "$dir/x" -type d -path "*/$archive") ;;
+            *)        if [ -f "$target" ]; then
+                          # Einzelne Datei (z. B. gamedata/*.json) statt Ordner
+                          mapfile -t found < <(find "$dir/x" -type f -path "*/$archive")
+                      else
+                          mapfile -t found < <(find "$dir/x" -type d -path "*/$archive")
+                      fi ;;
         esac
         if [ ${#found[@]} -ne 1 ]; then
             echo "FEHLER: '$archive' kommt ${#found[@]}x im Archiv vor (erwartet 1). Hat sich der Aufbau geändert?" >&2
             ok=0; break
         fi
         echo "ersetze $target"
+        if [ -f "$target" ]; then
+            if ! cp "${found[0]}" "$target"; then
+                echo "FEHLER: Kopieren nach $target fehlgeschlagen" >&2
+                ok=0; break
+            fi
+            continue
+        fi
         # "keep": Dateien im Repo-Ordner, die nicht überschrieben werden (eigene Configs).
         keepdir="$dir/keep/$k"
         mkdir -p "$keepdir"

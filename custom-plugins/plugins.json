@@ -108,6 +108,33 @@
           ]
         }
       ]
+    },
+    {
+      "name": "SharpTimer",
+      "repo": "Letaryat/poor-sharptimer",
+      "asset": "SharpTimer-v{version}.zip",
+      "version": "0.4.0",
+      "dirs": [
+        {
+          "archive": "counterstrikesharp/plugins/SharpTimer",
+          "repo": [
+            "game/csgo/addons/counterstrikesharp/plugins/SharpTimer",
+            "game/csgo/addons/counterstrikesharp/plugins/disabled/SharpTimer"
+          ]
+        },
+        {
+          "archive": "counterstrikesharp/shared/SharpTimerAPI",
+          "repo": [
+            "game/csgo/addons/counterstrikesharp/shared/SharpTimerAPI"
+          ]
+        },
+        {
+          "archive": "counterstrikesharp/gamedata/stgamedata.json",
+          "repo": [
+            "game/csgo/addons/counterstrikesharp/gamedata/stgamedata.json"
+          ]
+        }
+      ]
     }
   ]
 }

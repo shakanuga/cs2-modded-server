@@ -1,0 +1,79 @@
+name: build custom source plugins
+
+# Baut die eigenen Plugins aus custom-plugins/src/<Name>/ (C#, CounterStrikeSharp)
+# und legt das Ergebnis nach
+#   game/csgo/addons/counterstrikesharp/plugins/disabled/<Name>/
+# Danach wird das Docker-Image neu gebaut. Läuft bei jeder Änderung am Quellcode.
+#
+# Bei Build-Fehlern landet das Log im Branch "build-log" (Datei build.log).
+
+on:
+  push:
+    branches: [master]
+    paths: ['custom-plugins/src/**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: build-custom-source
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Bauen
+        run: |
+          set -euo pipefail
+          : > build.log
+          for proj in custom-plugins/src/*/*.csproj; do
+            name=$(basename "$proj" .csproj)
+            echo "=== $name" | tee -a build.log
+            dotnet build "$proj" -c Release -o "out/$name" 2>&1 | tee -a build.log
+            dest="game/csgo/addons/counterstrikesharp/plugins/disabled/$name"
+            rm -rf "$dest"
+            mkdir -p "$dest"
+            cp "out/$name/$name.dll" "out/$name/$name.pdb" "out/$name/$name.deps.json" "$dest/"
+          done
+
+      - name: Committen, pushen, Docker-Build starten
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add game/csgo/addons/counterstrikesharp/plugins/disabled
+          if git diff --cached --quiet; then
+            echo "Nichts geändert."
+            exit 0
+          fi
+          git commit -m "- BUILD (custom): $(ls custom-plugins/src | tr '\n' ' ')"
+          git pull --rebase origin master
+          git push origin HEAD:master
+          gh workflow run docker-image.yml --ref master
+
+      - name: Build-Log sichern
+        if: failure()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          touch build.log
+          cp build.log /tmp/build.log
+          git checkout --orphan build-log
+          git rm -rfq --cached .
+          cp /tmp/build.log build.log
+          git add -f build.log
+          git commit -qm "Build-Log"
+          git push -f origin build-log

@@ -19,6 +19,7 @@ Each game mode has a hand full of maps preset so you are ready to go and it's [e
 - Competitive (using [MatchZy](https://github.com/shobhit-pathak/MatchZy#usage-commands))
 - Practice (record grenade throws etc) (using [MatchZy](https://github.com/shobhit-pathak/MatchZy#usage-commands))
 - Wingman (allows more than 4 players) ([Steam API key](#playing-workshop-mapscollections) required)
+- Rush (allows more than 3v3)
 - GunGame ([Steam API key](#playing-workshop-mapscollections) required)
 - Custom Deathmatch ([Steam API key](#playing-workshop-mapscollections) required)
 - Prefire practice
@@ -97,7 +98,7 @@ Getting up and running:
 Mod | Version | Why
 --- | --- | ---
 [Metamod:Source](https://www.metamodsource.net/downloads.php?branch=dev) | `2.0.0-1483` | Sits between the Game and the Engine, and allows plugins to intercept calls that flow between
-[CounterStrikeSharp](https://github.com/roflmuffin/CounterStrikeSharp) | `1.0.378` | Attempts to implement a .NET Core scripting layer on top of a Metamod Source Plugin, allowing developers to create plugins that interact with the game server in a modern language (C#)
+[CounterStrikeSharp](https://github.com/roflmuffin/CounterStrikeSharp) | `1.0.379` | Attempts to implement a .NET Core scripting layer on top of a Metamod Source Plugin, allowing developers to create plugins that interact with the game server in a modern language (C#)
 [MultiAddonManager](https://github.com/Source2ZE/MultiAddonManager) | `1.7.3` | Allows you to use multiple workshop addons at once and have clients download them [How?](#i-want-to-permanently-enable-multi-addon-manager)
 [ServerListPlayersFix](https://github.com/Source2ZE/ServerListPlayersFix) | `2.1` | Fixes players not showing up in the server browser
 [MovementUnlocker](https://github.com/Source2ZE/MovementUnlocker) | `2.0.1` | Removes max speed limitation from players on the ground, feels like CS:S [How?](#i-run-a-surfkzbhop-server-and-want-movementunlocker-and-cs2fixes-rampbugfix-permanently-on)
@@ -581,6 +582,10 @@ To check SourceTV is working on your server type `tv_status` from the server con
 #### mg_valve_retakes
 
 <table><tr><td><table align="left"><tr><td><img src="https://github.com/kus/cs2-modded-server/blob/assets/images/de_dust2.jpg?raw=true&sanitize=true"></td></tr><tr><td>de_dust2<br><sup><sub>changelevel de_dust2</sub></sup></td></tr></table><table align="left"><tr><td><img src="https://github.com/kus/cs2-modded-server/blob/assets/images/de_mirage.jpg?raw=true&sanitize=true"></td></tr><tr><td>de_mirage<br><sup><sub>changelevel de_mirage</sub></sup></td></tr></table><table align="left"><tr><td><img src="https://github.com/kus/cs2-modded-server/blob/assets/images/de_inferno.jpg?raw=true&sanitize=true"></td></tr><tr><td>de_inferno<br><sup><sub>changelevel de_inferno</sub></sup></td></tr></table><table align="left"><tr><td><img src="https://github.com/kus/cs2-modded-server/blob/assets/images/de_ancient_night.jpg?raw=true&sanitize=true"></td></tr><tr><td>de_ancient_night<br><sup><sub>changelevel de_ancient_night</sub></sup></td></tr></table><table align="left"><tr><td><img src="https://github.com/kus/cs2-modded-server/blob/assets/images/de_nuke.jpg?raw=true&sanitize=true"></td></tr><tr><td>de_nuke<br><sup><sub>changelevel de_nuke</sub></sup></td></tr></table><table align="left"><tr><td><img src="https://github.com/kus/cs2-modded-server/blob/assets/images/de_train.jpg?raw=true&sanitize=true"></td></tr><tr><td>de_train<br><sup><sub>changelevel de_train</sub></sup></td></tr></table><table align="left"><tr><td><img src="https://github.com/kus/cs2-modded-server/blob/assets/images/de_overpass.jpg?raw=true&sanitize=true"></td></tr><tr><td>de_overpass<br><sup><sub>changelevel de_overpass</sub></sup></td></tr></table><table align="left"><tr><td><img src="https://github.com/kus/cs2-modded-server/blob/assets/images/de_anubis.jpg?raw=true&sanitize=true"></td></tr><tr><td>de_anubis<br><sup><sub>changelevel de_anubis</sub></sup></td></tr></table><table align="left"><tr><td><img src="https://github.com/kus/cs2-modded-server/blob/assets/images/de_vertigo.jpg?raw=true&sanitize=true"></td></tr><tr><td>de_vertigo<br><sup><sub>changelevel de_vertigo</sub></sup></td></tr></table></td></tr></table>
+
+#### mg_rush
+
+<table><tr><td><table align="left"><tr><td><img src="https://github.com/kus/cs2-modded-server/blob/assets/images/rush_001.jpg?raw=true&sanitize=true"></td></tr><tr><td>rush_001<br><sup><sub>changelevel rush_001</sub></sup></td></tr></table></td></tr></table>
 
 #### mg_comp
 

@@ -35,7 +35,7 @@
       "name": "CS2 Bot Improver",
       "repo": "ed0ard/CS2-Bot-Improver",
       "asset": "CS2BotImprover_for_Linux.zip",
-      "version": "1.4.7",
+      "version": "1.4.8",
       "dirs": [
         {
           "archive": "counterstrikesharp/plugins/BotAI",

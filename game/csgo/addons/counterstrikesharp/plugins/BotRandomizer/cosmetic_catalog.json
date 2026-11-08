@@ -1,10 +1,10 @@
 {
   "source": {
     "repository": "ianlucas/cs2-lib",
-    "commit": "527e05dbeb77c37cda16e9d8aed68bf96f62a92b",
+    "commit": "9d316bba28f563845d1796cfc09198daa1939752",
     "package": "@ianlucas/cs2-lib",
-    "version": "9.8.0",
-    "integrity": "sha512-WQd1yE1E8DMUnLQ/l2NwmMqpRYoJFcX7TsbDxplg+lyY4IiyousC2DKNcd7Sqsn9FNYwCd/7aLLfbzxs/1GLrQ=="
+    "version": "9.10.0",
+    "integrity": "sha512-KFXyf+mEHWzp0Ko4hteQ6+QsGDvqNqtBi+QrBusLd/R9ycv2ZNfuPKZZF31jJzr51LId5PuqGDQcj7u0DzwuEQ=="
   },
   "weapons": [
     {
@@ -70452,6 +70452,7 @@
     80,
     81,
     82,
+    83,
     84
   ],
   "musicKits": [

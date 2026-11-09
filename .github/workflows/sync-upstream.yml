@@ -1,0 +1,83 @@
+name: sync fork with kus
+
+# Holt automatisch die Änderungen aus kus/cs2-modded-server (genau wie der Knopf
+# "Sync fork" auf GitHub) und baut danach das Docker-Image neu.
+# Die eigenen Sachen (custom-plugins/, eigene Workflows) liegen in eigenen Dateien
+# und bleiben beim Sync erhalten. kus' Mod-Updates kommen über seinen master mit –
+# deshalb bleibt "auto update mods" in diesem Fork deaktiviert.
+#
+# Klappt der Sync nicht (Konflikt mit eigenen Änderungen, oder kus hat
+# Workflow-Dateien geändert), schlägt der Lauf fehl und GitHub schickt eine Mail.
+# Dann einmal auf GitHub "Sync fork" klicken bzw. den Konflikt lösen.
+#
+# Optional: Actions-Secret SYNC_TOKEN (Fine-grained Token nur für dieses Repo,
+# Rechte Contents + Workflows je "Read and write"). Damit klappt der Sync auch,
+# wenn kus Dateien unter .github/workflows/ ändert – das Actions-Token darf das nicht.
+
+on:
+  schedule:
+    # 04:47 und 16:47 UTC – nach kus' Updater (04:00 UTC) und vor
+    # "update custom plugins" (05:17 UTC)
+    - cron: '47 4 * * *'
+    - cron: '47 16 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: sync-upstream
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mit kus synchronisieren
+        id: sync
+        env:
+          GH_TOKEN: ${{ secrets.SYNC_TOKEN || github.token }}
+        run: |
+          set -uo pipefail
+          branch=$(gh api "repos/$GITHUB_REPOSITORY" --jq .default_branch)
+          if out=$(gh api -X POST "repos/$GITHUB_REPOSITORY/merge-upstream" -f branch="$branch" 2>&1); then
+            echo "$out"
+            type=$(jq -r '.merge_type // "none"' <<<"$out")
+            echo "merge_type=$type" >> "$GITHUB_OUTPUT"
+            case "$type" in
+              none) msg="Schon aktuell, nichts zu tun." ;;
+              *)    msg="Änderungen von kus übernommen ($type)." ;;
+            esac
+            echo "$msg"
+            echo "### Fork-Sync: $msg" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo "$out"
+          if grep -qi 'workflow' <<<"$out"; then
+            hint="kus hat Workflow-Dateien geändert – das darf das Actions-Token nicht. Einmal auf GitHub \"Sync fork\" klicken (oder Secret SYNC_TOKEN anlegen, siehe oben in dieser Datei)."
+          elif grep -qE '409|conflict' <<<"$out"; then
+            hint="Konflikt zwischen kus' Änderungen und eigenen Änderungen – auf GitHub \"Sync fork\" öffnen und den Konflikt lösen."
+          else
+            hint="Unerwarteter Fehler, siehe Log."
+          fi
+          echo "::error::Fork-Sync fehlgeschlagen: $hint"
+          {
+            echo "### Fork-Sync fehlgeschlagen"
+            echo
+            echo "$hint"
+            echo
+            echo '```'
+            echo "$out"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit 1
+
+      # Ein Sync über die API löst keinen Push-Workflow aus, ein
+      # workflow_dispatch schon – deshalb wird "build and publish" direkt gestartet.
+      - name: Docker-Image neu bauen
+        if: steps.sync.outputs.merge_type != 'none'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run docker-image.yml --ref "${{ github.event.repository.default_branch }}"

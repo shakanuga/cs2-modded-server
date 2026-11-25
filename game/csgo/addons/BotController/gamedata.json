@@ -130,6 +130,13 @@
     },
     "comment": "CCSBot -> m_profile"
   },
+  "CCSBot::LocalProfile": {
+    "offsets": {
+      "windows": 256,
+      "linux": 248
+    },
+    "comment": "CCSBot-owned BotProfile copy"
+  },
   "BotProfile::Aggression": {
     "offsets": {
       "windows": 8,
@@ -150,6 +157,34 @@
       "linux": 16
     },
     "comment": "m_teamwork"
+  },
+  "BotProfile::AimFocusInitial": {
+    "offsets": {
+      "windows": 20,
+      "linux": 20
+    },
+    "comment": "m_aimFocusInitial"
+  },
+  "BotProfile::AimFocusDecay": {
+    "offsets": {
+      "windows": 24,
+      "linux": 24
+    },
+    "comment": "m_aimFocusDecay"
+  },
+  "BotProfile::AimFocusOffsetScale": {
+    "offsets": {
+      "windows": 28,
+      "linux": 28
+    },
+    "comment": "m_aimFocusOffsetScale"
+  },
+  "BotProfile::AimFocusInterval": {
+    "offsets": {
+      "windows": 32,
+      "linux": 32
+    },
+    "comment": "m_aimFocusInterval"
   },
   "BotProfile::WeaponPref": {
     "offsets": {
@@ -179,6 +214,13 @@
     },
     "comment": "m_difficultyFlags"
   },
+  "BotProfile::VoicePitch": {
+    "offsets": {
+      "windows": 84,
+      "linux": 84
+    },
+    "comment": "m_voicePitch"
+  },
   "BotProfile::ReactionTime": {
     "offsets": {
       "windows": 88,
@@ -192,6 +234,27 @@
       "linux": 92
     },
     "comment": "m_attackDelay"
+  },
+  "BotProfile::LookAngleMaxAccelNormal": {
+    "offsets": {
+      "windows": 108,
+      "linux": 108
+    },
+    "comment": "m_lookAngleMaxAccelNormal"
+  },
+  "BotProfile::LookAngleStiffnessNormal": {
+    "offsets": {
+      "windows": 112,
+      "linux": 112
+    },
+    "comment": "m_lookAngleStiffnessNormal"
+  },
+  "BotProfile::LookAngleDampingNormal": {
+    "offsets": {
+      "windows": 116,
+      "linux": 116
+    },
+    "comment": "m_lookAngleDampingNormal"
   },
   "BotProfile::LookAngleMaxAccelAttacking": {
     "offsets": {
